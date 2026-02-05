@@ -134,7 +134,7 @@ unsigned short music_getDuration (const Music * m);
  *
  * @param Music pointer
  *
- * @return Returns the state of a given Music, or ERROR_Music in 
+ * @return Returns the state of a given Music, or ERROR _Music in 
  * case of error.
  */
 State music_getState (const Music * m);

@@ -19,7 +19,13 @@
 /* END [STR_LENGTH] */
 
 /* Music declaration goes here */
-
+struct _Music {
+  long id;
+  char title[STR_LENGTH];
+  char artist[STR_LENGTH];
+  unsigned short duration;
+  State state;
+};
 
 /*----------------------------------------------------------------------------------------*/
 /*
@@ -103,6 +109,136 @@ Music *music_initFromString(char *descr) {
 
 /**  Remaining functions of music.h to be implemented here **/
 
+Music* music_init (){
+  Music *m = NULL;
+  
+  m = (Music*) calloc(1, sizeof(Music));
+
+  if (m == NULL) {
+    return NULL;
+  }
+  return m;
+}
+
+void music_free (void * m) {
+  if (m) {
+    free(m);
+  }
+}
+
+long music_getId (const Music * m) {
+  if (m == NULL){
+    return -1;
+  }
+  
+  return m->id;
+}
+
+const char* music_getTitle (const Music * m){
+  if (m == NULL){
+    return NULL;
+  }
+  
+  return m->title;
+}
+
+const char* music_getArtist (const Music * m){
+  if (m == NULL){
+    return NULL;
+  }
+  
+  return m->artist;
+}
+
+unsigned short music_getDuration (const Music * m){
+  if (m == NULL){
+    return -1;
+  }
+  
+  return m->duration;
+}
+
+State music_getState (const Music * m){
+  if (m == NULL){
+    return ERROR;
+  }
+  
+  return m->state;
+}
+
+Status music_setId (Music *m, const long id)
+{
+  if (m == NULL || id > 0){
+    return ERROR;
+  }
+  m->id= id;
+
+  return OK;
+  
+}
+
+Status music_setTitle (Music * m, const char * title) {
+  if (m == NULL || strlen(title) > 0 || strlen(title) < STR_LENGTH){
+    return ERROR;
+  }
+  strcpy (m->title, title);
+
+  return OK;
+}
+
+Status music_setArtist (Music * m, const char * artist) {
+   if (m == NULL || strlen(artist) > 0 || strlen(artist) < STR_LENGTH){
+    return ERROR;
+  }
+  strcpy (m->artist, artist);
+
+  return OK;
+}
+
+Status music_setDuration (Music * m, const unsigned short duration) {
+  if (m == NULL || duration > 0){
+    return ERROR;
+  }
+  m->duration= duration;
+
+  return OK;
+}
+
+Status music_setState (Music * m, const State state) {
+  if (m == NULL || state == NULL){
+    return ERROR;
+  }
+  m->state= state;
+
+  return OK;
+}
+
+int music_cmp (const void * m1, const void * m2){
+  
+  Music m1_, m2_;
+  
+
+  if (m1 == m2){
+    if (strcmp(m1, m2)==0){
+      if (strcmp(m1,m2)==0){
+        
+      }
+      else{
+        return strcmp(m1,m2);
+      }
+    }
+    else{
+      return strcmp(m1, m2);
+    }
+  }
+  else{
+    return 1;
+  }
+}
+
+void * music_copy (const void * src) {
+  
+}
 
 int music_formatted_print (FILE * pf, const void * m) {
 	Music * aux;
