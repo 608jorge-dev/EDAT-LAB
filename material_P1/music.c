@@ -215,7 +215,8 @@ Status music_setState (Music * m, const State state) {
 
 int music_cmp (const void * m1, const void * m2){
   
-  Music m1_, m2_;
+(*Music)= m1;
+(*Music)= m2
   
 
   if (m1 == m2){
