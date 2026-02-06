@@ -241,6 +241,10 @@ void * music_copy (const void * src) {
   
 }
 
+int music_plain_print (FILE * pf, const void * m){
+	
+}
+
 int music_formatted_print (FILE * pf, const void * m) {
 	Music * aux;
 	int counter = 0, minutes, sec;
