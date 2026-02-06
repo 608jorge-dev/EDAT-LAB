@@ -215,21 +215,21 @@ Status music_setState (Music * m, const State state) {
 
 int music_cmp (const void * m1, const void * m2){
   
-(*Music)= m1;
-(*Music)= m2
+1 = (Music*) m;
+2 = (Music*) m;
   
 
-  if (m1 == m2){
-    if (strcmp(m1, m2)==0){
-      if (strcmp(m1,m2)==0){
+  if (1 == 2){
+    if (strcmp(1, 2)==0){
+      if (strcmp(1,2)==0){
         
       }
       else{
-        return strcmp(m1,m2);
+        return strcmp(1,2);
       }
     }
     else{
-      return strcmp(m1, m2);
+      return strcmp(1, 2);
     }
   }
   else{
@@ -243,6 +243,10 @@ void * music_copy (const void * src) {
 
 int music_plain_print (FILE * pf, const void * m){
 	
+  if (!pf || !m) return -1;
+  (*Music)=m;
+
+  fprintf (pf, )
 }
 
 int music_formatted_print (FILE * pf, const void * m) {
