@@ -252,11 +252,11 @@ int music_plain_print (FILE * pf, const void * m){
 	minutes = aux->duration / 60;
     sec = aux->duration % 60;
   
-  counter = fprintf(pf, "%ld" aux->id);
-  counter = fprintf(pf, "%s" aux->title);
+  counter += fprintf(pf, "%ld" aux->id);
+  counter += fprintf(pf, "%s" aux->title);
 	counter += fprintf(pf, "%s", aux->artist);
 	counter += fprintf(pf, "%.2d %.2d", minutes, sec);
-  counter = fprintf(pf, "%d" aux->state);
+  counter += fprintf(pf, "%d" aux->state);
 	
 	return counter;
 }
