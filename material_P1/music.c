@@ -242,11 +242,23 @@ void * music_copy (const void * src) {
 }
 
 int music_plain_print (FILE * pf, const void * m){
-	
+  Music * aux;
+	int counter = 0, minutes, sec;
   if (!pf || !m) return -1;
-  (*Music)=m;
 
-  fprintf (pf, )
+  aux = (Music*) m;
+
+  if (!aux->duration || aux->duration <= 0) return -1;
+	minutes = aux->duration / 60;
+    sec = aux->duration % 60;
+  
+  counter = fprintf(pf, "%ld" aux->id);
+  counter = fprintf(pf, "%s" aux->title);
+	counter += fprintf(pf, "%s", aux->artist);
+	counter += fprintf(pf, "%.2d %.2d", minutes, sec);
+  counter = fprintf(pf, "%d" aux->state);
+	
+	return counter;
 }
 
 int music_formatted_print (FILE * pf, const void * m) {
