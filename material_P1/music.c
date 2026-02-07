@@ -221,22 +221,23 @@ Status music_setState (Music * m, const State state) {
 }
 
 int music_cmp (const void * m1, const void * m2){
+  Music *one=NULL, *two=NULL;
+  if (!m1 || !m2){
+    return NULL;
+  }
+  one = (Music*) m1;
+  two = (Music*) m2;
   
-1 = (Music*) m;
-2 = (Music*) m;
-  
+  if (!one || !two){
+    return NULL;
+  }
 
-  if (1 == 2){
-    if (strcmp(1, 2)==0){
-      if (strcmp(1,2)==0){
-        
-      }
-      else{
-        return strcmp(1,2);
-      }
+  if ((one->id) == two->id){
+    if (strcmp(one->title, one->title)==0){
+      return strcmp(one->artist, two->artist);
     }
     else{
-      return strcmp(1, 2);
+      return strcmp(one->title, two->title);
     }
   }
   else{
