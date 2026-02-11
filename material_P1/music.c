@@ -233,7 +233,7 @@ int music_cmp (const void * m1, const void * m2){
   }
 
   if ((one->id) == two->id){
-    if (strcmp(one->title, one->title)==0){
+    if (strcmp(one->title, two->title)==0){
       return strcmp(one->artist, two->artist);
     }
     else{
