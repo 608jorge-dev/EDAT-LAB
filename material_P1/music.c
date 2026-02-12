@@ -14,9 +14,14 @@
 #include "music.h"
 
 
-/* START [STR_LENGTH] */
+
 #define STR_LENGTH 64
-/* END [STR_LENGTH] */
+#define NO_ID -1
+#define ID_INIT 0
+#define NO_DUR -1
+#define DUR_INIT 0
+#define DIF_CMP -2
+#define NO_PRINT -1
 
 /* Music declaration goes here */
 struct _Music {
@@ -118,11 +123,11 @@ Music* music_init (){
     return NULL;
   }
 
-  m->id = 0;
-  m->duration = 0;
-  m->state = NOT_LISTENED;
-  m->title[0] = '\0';
-  m->artist[0] = '\0';
+  m->id = music_setId(m, ID_INIT);
+  m->duration = music_setDuration(m, DUR_INIT);
+  m->state = music_setState(m, NOT_LISTENED);
+  m->title[0] = music_setTitle(m, "");
+  m->artist[0] = music_setArtist(m, "");
 
   return m;
 }
@@ -135,7 +140,7 @@ void music_free (void * m) {
 
 long music_getId (const Music * m) {
   if (m == NULL){
-    return -1;
+    return NO_ID;
   }
   
   return m->id;
@@ -159,7 +164,7 @@ const char* music_getArtist (const Music * m){
 
 unsigned short music_getDuration (const Music * m){
   if (m == NULL){
-    return -1;
+    return NO_DUR;
   }
   
   return m->duration;
@@ -173,8 +178,7 @@ State music_getState (const Music * m){
   return m->state;
 }
 
-Status music_setId (Music *m, const long id)
-{
+Status music_setId (Music *m, const long id){
   if (m == NULL || id < 0){
     return ERROR;
   }
@@ -223,13 +227,13 @@ Status music_setState (Music * m, const State state) {
 int music_cmp (const void * m1, const void * m2){
   Music *one=NULL, *two=NULL;
   if (!m1 || !m2){
-    return NULL;
+    return ERROR;
   }
   one = (Music*) m1;
   two = (Music*) m2;
   
   if (!one || !two){
-    return NULL;
+    return ERROR;
   }
 
   if ((one->id) == two->id){
@@ -241,7 +245,7 @@ int music_cmp (const void * m1, const void * m2){
     }
   }
   else{
-    return 1;
+    return DIF_CMP;
   }
 }
 
@@ -261,24 +265,25 @@ void * music_copy (const void * src) {
   copy->duration = orig->duration;
   copy->state = orig->state;
 
-    return copy;
+  return copy;
 }
 
 int music_plain_print (FILE * pf, const void * m){
   Music * aux;
-	int counter = 0, minutes, sec;
-  if (!pf || !m) return -1;
+	int counter = 0, minutes = 0, sec=0;
+  if (!pf || !m) return NO_PRINT;
 
   aux = (Music*) m;
 
-  if (!aux->duration || aux->duration <= 0) return -1;
-	minutes = aux->duration / 60;
+  if (!aux->duration || aux->duration <= 0) {
+    return NO_PRINT;
+	  minutes = aux->duration / 60;
     sec = aux->duration % 60;
-  
+  }
   counter += fprintf(pf, "%ld", aux->id);
   counter += fprintf(pf, "%s", aux->title);
 	counter += fprintf(pf, "%s", aux->artist);
-	counter += fprintf(pf, "%.2d %.2d", minutes, sec);
+	counter += fprintf(pf, "%02d %02d", minutes, sec);
   counter += fprintf(pf, "%d", aux->state);
 	
 	return counter;
@@ -287,11 +292,11 @@ int music_plain_print (FILE * pf, const void * m){
 int music_formatted_print (FILE * pf, const void * m) {
 	Music * aux;
 	int counter = 0, minutes, sec;
-	if (!pf || !m) return -1;
+	if (!pf || !m) return NO_PRINT;
 
 	aux = (Music*) m;
 	
-	if (!aux->duration || aux->duration <= 0) return -1;
+	if (!aux->duration || aux->duration <= 0) return NO_PRINT;
 	minutes = aux->duration / 60;
     sec = aux->duration % 60;
 	

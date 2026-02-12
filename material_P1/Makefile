@@ -21,7 +21,7 @@ p1_e3: $(OBJECTSP1E3)
 	$(CC) $(CFLAGS) -o p1_e3 $(OBJECTSP1E3)
 
 
-p1_e1.o: p1_e1.c music.h
+p1_e1.o: p1_e1.c 
 	$(CC) $(CFLAGS) -c p1_e1.c
 
 #p1_e2.o: p1_e2.c music.h radio.h
@@ -30,7 +30,7 @@ p1_e1.o: p1_e1.c music.h
 #p1_e3.o: p1_e3.c music.h radio.h
 #	$(CC) $(CFLAGS) -c p1_e3.c
 
-music.o: music.c music.h
+music.o: music.c music.h 
 	$(CC) $(CFLAGS) -c music.c
 
 #radio.o: radio.c radio.h music.h
