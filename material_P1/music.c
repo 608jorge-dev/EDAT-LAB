@@ -15,12 +15,12 @@
 
 
 
-#define STR_LENGTH 64
+#define STR_LENGTH 64           
 #define NO_ID -1
 #define ID_INIT 0
-#define NO_DUR -1
+#define NO_DUR 0
 #define DUR_INIT 0
-#define DIF_CMP -2
+#define DIF_CMP -1
 #define NO_PRINT -1
 
 /* Music declaration goes here */
@@ -123,11 +123,11 @@ Music* music_init (){
     return NULL;
   }
 
-  m->id = music_setId(m, ID_INIT);
-  m->duration = music_setDuration(m, DUR_INIT);
-  m->state = music_setState(m, NOT_LISTENED);
-  m->title[0] = music_setTitle(m, "");
-  m->artist[0] = music_setArtist(m, "");
+  music_setId(m, ID_INIT);
+  music_setDuration(m, DUR_INIT);
+  music_setState(m, NOT_LISTENED);
+  music_setTitle(m, "");
+  music_setArtist(m, "");
 
   return m;
 }
@@ -275,16 +275,15 @@ int music_plain_print (FILE * pf, const void * m){
 
   aux = (Music*) m;
 
-  if (!aux->duration || aux->duration <= 0) {
-    return NO_PRINT;
+  if (!aux->duration || aux->duration <= 0) return NO_PRINT;
 	  minutes = aux->duration / 60;
     sec = aux->duration % 60;
-  }
-  counter += fprintf(pf, "%ld", aux->id);
-  counter += fprintf(pf, "%s", aux->title);
-	counter += fprintf(pf, "%s", aux->artist);
-	counter += fprintf(pf, "%02d %02d", minutes, sec);
-  counter += fprintf(pf, "%d", aux->state);
+ 
+  counter += fprintf(pf, "[%ld, ", aux->id);
+  counter += fprintf(pf, "%s, ", aux->title);
+	counter += fprintf(pf, "%s, ", aux->artist);
+	counter += fprintf(pf, "%02d %02d, ", minutes, sec);
+  counter += fprintf(pf, "%d]", aux->state);
 	
 	return counter;
 }
@@ -297,8 +296,9 @@ int music_formatted_print (FILE * pf, const void * m) {
 	aux = (Music*) m;
 	
 	if (!aux->duration || aux->duration <= 0) return NO_PRINT;
+
 	minutes = aux->duration / 60;
-    sec = aux->duration % 60;
+  sec = aux->duration % 60;
 	
 	counter = fprintf(pf, "\t ɴᴏᴡ ᴘʟᴀʏɪɴɢ: %s\n", aux->title);
 	counter += fprintf(pf, "\t • Artist %s •\n", aux->artist);
