@@ -17,6 +17,14 @@
 #include <stdlib.h>
 #include "types.h"
 
+#define STR_LENGTH 64           
+#define NO_ID -1
+#define ID_INIT 0
+#define NO_DUR 0
+#define DUR_INIT 0
+#define DIF_CMP -1
+#define NO_PRINT -1
+
 /** 
  * @brief State to characterize the Music state (to be used in P2)
  *
@@ -35,7 +43,6 @@ typedef enum {
 /* START [Music] */
 typedef struct _Music Music;
 /* END [Music] */
-
 
 /**
  * @brief Constructor. Initialize a Music.

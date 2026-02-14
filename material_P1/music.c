@@ -13,16 +13,6 @@
 #include <string.h>
 #include "music.h"
 
-
-
-#define STR_LENGTH 64           
-#define NO_ID -1
-#define ID_INIT 0
-#define NO_DUR 0
-#define DUR_INIT 0
-#define DIF_CMP -1
-#define NO_PRINT -1
-
 /* Music declaration goes here */
 struct _Music {
   long id;
@@ -34,7 +24,7 @@ struct _Music {
 
 /*----------------------------------------------------------------------------------------*/
 /*
-Private function:
+* Private function:
 */
 Status music_setField (Music *m, char *key, char *value);
 

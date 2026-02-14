@@ -4,12 +4,6 @@
 
 #include "radio.h"
 
-#define MAX_MSC 4096
-#define NO_MUSICPOSITION -1
-#define NO_NUMMUSIC -1
-#define NO_RELATIONS -1
-
-
 struct _Radio {
   Music *songs[MAX_MSC];
   Bool relations [MAX_MSC][MAX_MSC];
@@ -157,6 +151,8 @@ int radio_getNumberOfRelations(const Radio *r) {
 }
 
 //*******************************************************//
+
+
 Bool radio_relationExists(const Radio *r, long orig, long dest) {
   if (!r) {
     return NO_RELATIONS;
@@ -172,21 +168,21 @@ Bool radio_relationExists(const Radio *r, long orig, long dest) {
   return FALSE;
 }
 
-int radio_getNumberOfRelationsFromId(const Radio *r, long id) {
+/*int radio_getNumberOfRelationsFromId(const Radio *r, long id) {
   int i,j,rel=0;
   if (!r) {
     return -1; //Hay que devolver -1 pero ERROR=0
   }
 
-  for (i=id; i<r->num_music; i++) {
-    for (j=1; j<r->num_music; j++)  {
+  for (i=id; i<(radio_getNumberOfMusic(r)); i++) {
+    for (j=1; j<(radio_getNumberOfMusic(r)); j++)  {
       if ((radio_relationExists(r,music_getId(r->songs[i]),music_getId(r->songs[j])))==TRUE)  {
         rel++;
       }
     }
   }
   return rel;
-}
+}*/
 
 long *radio_getRelationsFromId(const Radio *r, long id) {
   long *array=NULL;
@@ -195,12 +191,12 @@ long *radio_getRelationsFromId(const Radio *r, long id) {
     return -1; //Hay que devolver -1 pero ERROR=0
   }
 
-  array= (long*)calloc(r->num_music,sizeof(long));
+  array= (long*)calloc(radio_getNumberOfMusic(r),sizeof(long));
   if (array=NULL) {
     return -1;
   }
 
-  for (i=0; i<r->num_music; i++)  {
+  for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {
     if ((radio_relationExists(r, id, music_getId(r->songs[i])))==TRUE){
       array[j]=music_getId(r->songs[i]);
       j++;
@@ -213,14 +209,14 @@ int radio_print (FILE *pf, const Radio *r) {
   int i,j;
   long *ar=NULL;
   if (!pf || !r) {
-    //return NO_PRINT;
+    return NO_PRINT;
   }
 
-  for (i=0; i<r->num_music; i++)  {
+  for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {
     music_plain_print(pf, r->songs[i]);
     fprintf (pf, ":");
     ar=radio_getRelationsFromId(r, music_getId(r->songs[i]));
-    for (j=0; i<r->num_music; i++)  {
+    for (j=0; i<(radio_getNumberOfMusic(r)); i++)  {
       music_plain_print(pf,ar[j]);
     }
     fprintf (pf, "\n");

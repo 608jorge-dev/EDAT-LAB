@@ -13,6 +13,11 @@
 
 #include "music.h"
 
+#define MAX_MSC 4096
+#define NO_MUSICPOSITION -1
+#define NO_NUMMUSIC -1
+#define NO_RELATIONS -1
+
 typedef struct _Radio Radio;
 
 /**

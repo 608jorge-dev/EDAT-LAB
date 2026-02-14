@@ -33,8 +33,8 @@ p1_e1.o: p1_e1.c
 music.o: music.c music.h 
 	$(CC) $(CFLAGS) -c music.c
 
-#radio.o: radio.c radio.h music.h
-#	$(CC) $(CFLAGS) -c radio.c
+radio.o: radio.c radio.h music.h
+	$(CC) $(CFLAGS) -c radio.c
 
 clear:
 	rm -rf *.o 
