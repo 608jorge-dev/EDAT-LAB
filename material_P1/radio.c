@@ -151,14 +151,12 @@ int radio_getNumberOfRelations(const Radio *r) {
 }
 
 //*******************************************************//
-
-
 Bool radio_relationExists(const Radio *r, long orig, long dest) {
   if (!r) {
-    return NO_RELATIONS;
+    return FALSE;
   }
   if ((radio_contains(r,orig)==FALSE)||(radio_contains(r,dest)==FALSE)) {
-    return NO_RELATIONS;
+    return FALSE;
   }
 
   if ((r->relations[radio_musicPosition(r,orig)][radio_musicPosition(r,dest)])==TRUE) {
@@ -168,32 +166,31 @@ Bool radio_relationExists(const Radio *r, long orig, long dest) {
   return FALSE;
 }
 
-/*int radio_getNumberOfRelationsFromId(const Radio *r, long id) {
-  int i,j,rel=0;
+int radio_getNumberOfRelationsFromId(const Radio *r, long id) {
+  int i,rel=0;
   if (!r) {
     return -1; //Hay que devolver -1 pero ERROR=0
   }
 
-  for (i=id; i<(radio_getNumberOfMusic(r)); i++) {
-    for (j=1; j<(radio_getNumberOfMusic(r)); j++)  {
-      if ((radio_relationExists(r,music_getId(r->songs[i]),music_getId(r->songs[j])))==TRUE)  {
+  for (i=0; i<(radio_getNumberOfMusic(r)); i++) {
+      if ((radio_relationExists(r,id,music_getId(r->songs[i])))==TRUE)  {
         rel++;
       }
-    }
+    
   }
   return rel;
-}*/
+}
 
 long *radio_getRelationsFromId(const Radio *r, long id) {
   long *array=NULL;
   int i,j=0;
   if (!r) {
-    return -1; //Hay que devolver -1 pero ERROR=0
+    return ERROR; //Hay que devolver -1 pero ERROR=0
   }
 
   array= (long*)calloc(radio_getNumberOfMusic(r),sizeof(long));
-  if (array=NULL) {
-    return -1;
+  if (array==NULL) {
+    return ERROR;
   }
 
   for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {
@@ -213,16 +210,17 @@ int radio_print (FILE *pf, const Radio *r) {
   }
 
   for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {
-    music_plain_print(pf, r->songs[i]);
+    music_plain_print(pf,r->songs[i]);
     fprintf (pf, ":");
     ar=radio_getRelationsFromId(r, music_getId(r->songs[i]));
-    for (j=0; i<(radio_getNumberOfMusic(r)); i++)  {
-      music_plain_print(pf,ar[j]);
+    for (j=0; j<(radio_getNumberOfMusic(r)); j++)  {
+      music_plain_print(pf,r->songs[radio_musicPosition(r, ar[j])]);
     }
     fprintf (pf, "\n");
   }
+  return OK;
 }
 
-Status radio_readFromFile (FILE *fin, Radio *r) {
+/*Status radio_readFromFile (FILE *fin, Radio *r) {
 
-}
+}*/
