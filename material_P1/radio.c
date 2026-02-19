@@ -53,9 +53,6 @@ Radio *radio_init() {
     return NULL;
   }
 
-  for (i=0; i<MAX_MSC; i++) {
-    r->songs[i]=music_init();
-  }
   r->num_music = 0;
   r->num_relations = 0;
 
@@ -187,7 +184,7 @@ int radio_getNumberOfRelationsFromId(const Radio *r, long id) {
 long *radio_getRelationsFromId(const Radio *r, long id) {
   long *array=NULL;
   int i,j=0,size;
-  if (!r || id<0) {
+  if (!r || id<0 ||(radio_contains(r,id)==FALSE)) {
     return NULL;
   }
 
@@ -198,7 +195,7 @@ long *radio_getRelationsFromId(const Radio *r, long id) {
   
   array=(long*)calloc(size,sizeof(long));
   if (array==NULL) {
-    return ERROR;
+    return NULL;
   }
 
   for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {
@@ -229,6 +226,55 @@ int radio_print (FILE *pf, const Radio *r) {
   return OK;
 }
 
-/*Status radio_readFromFile (FILE *fin, Radio *r) {
+Status radio_readFromFile (FILE *fin, Radio *r) {
+  char line[1024];
+  int n_music, i;
+  long orig, dest;
+  char *token;
 
-}*/
+  if (!fin || !r)
+    return ERROR;
+
+  /*Read number of songs*/
+  if (!fgets(line, sizeof(line), fin))
+    return ERROR;
+
+  n_music = atoi(line);
+
+  /*Read songs*/
+  for (i = 0; i < n_music; i++) {
+
+    if (!fgets(line, sizeof(line), fin))
+      return ERROR;
+
+    /*remove '\n'*/
+    line[strcspn(line, "\n")] = '\0';
+
+    if (radio_newMusic(r, line) == ERROR)
+      return ERROR;
+  }
+
+  /*Read relations*/
+  while (fgets(line, sizeof(line), fin)) {
+
+    token = strtok(line, " \n");
+
+    if (!token)
+      continue;
+
+    orig = atol(token);
+
+    token = strtok(NULL, " \n"); //aqui, para el strtok, se usa NULL ya que esta funcion recuerda internamente donde se quedo
+
+    while (token) {
+      dest = atol(token);
+
+      if (radio_newRelation(r, orig, dest) == ERROR)
+        return ERROR;
+
+      token = strtok(NULL, " \n");
+    }
+  }
+
+  return OK;
+}

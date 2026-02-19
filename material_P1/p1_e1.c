@@ -25,8 +25,8 @@ int main () {
     //set m2
     m2=music_init();
     music_setId(m2, 20);
-    music_setTitle(m2, "Blinding Lights");
-    music_setArtist(m2, "The Weeknd");
+    music_setTitle(m2, "Bohemian Rhapsody");
+    music_setArtist(m2, "Queen");
     music_setDuration(m2, 355);
 
     //print m1 y m2
