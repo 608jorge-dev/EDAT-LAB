@@ -32,7 +32,7 @@ int radio_musicPosition(const Radio *r, long id);
 int radio_musicPosition(const Radio *r, long id) {
   int i;
 
-  if (!r){ return NO_MUSICPOSITION;}
+  if (!r || id<0){ return NO_MUSICPOSITION;}
 
   for (i = 0; i < r->num_music; i++) {
     if (music_getId(r->songs[i]) == id)
@@ -53,6 +53,9 @@ Radio *radio_init() {
     return NULL;
   }
 
+  for (i=0; i<MAX_MSC; i++) {
+    r->songs[i]=music_init();
+  }
   r->num_music = 0;
   r->num_relations = 0;
 
@@ -79,7 +82,7 @@ void radio_free(Radio *r) {
 }
 
 Status radio_newMusic(Radio *r, char *desc) {
-  Music *m;
+  Music *m=NULL;
   long id;
 
   if (!r || !desc) return ERROR;
@@ -89,7 +92,7 @@ Status radio_newMusic(Radio *r, char *desc) {
 
   id = music_getId(m);
 
-  if (radio_musicPosition(r, id) != NO_MUSICPOSITION) {
+  if (radio_contains(r, id) == TRUE){
     music_free(m);
     return OK;
   }
@@ -108,19 +111,19 @@ Status radio_newMusic(Radio *r, char *desc) {
 Status radio_newRelation(Radio *r, long orig, long dest) {
   int i, j;
 
-  if (!r) return ERROR;
+  if (!r || orig<0 || dest<0) return ERROR;
 
   i = radio_musicPosition(r, orig);
   j = radio_musicPosition(r, dest);
 
-  if (i == -1 || j == -1) return ERROR;
+  if (i == NO_MUSICPOSITION || j == NO_MUSICPOSITION) return ERROR;
 
-  if (r->relations[i][j] == TRUE) 
-    return OK; //preguntar a la profe que deberia devolver, si OK o ERROR
-
+  if (radio_relationExists(r, orig, dest) == TRUE) {
+    return OK; 
+  }
+  
   r->relations[i][j] = TRUE;
   r->num_relations++;
-  
 
   return OK;
 }
@@ -128,7 +131,7 @@ Status radio_newRelation(Radio *r, long orig, long dest) {
 Bool radio_contains(const Radio *r, long id) {
   int i;
 
-  if (!r) return FALSE;
+  if (!r || id<0) return FALSE;
 
   for (i = 0; i < r->num_music; i++) {
     if (music_getId(r->songs[i]) == id)
@@ -152,7 +155,7 @@ int radio_getNumberOfRelations(const Radio *r) {
 
 //*******************************************************//
 Bool radio_relationExists(const Radio *r, long orig, long dest) {
-  if (!r) {
+  if (!r || orig<0 || dest<0) {
     return FALSE;
   }
   if ((radio_contains(r,orig)==FALSE)||(radio_contains(r,dest)==FALSE)) {
@@ -168,8 +171,8 @@ Bool radio_relationExists(const Radio *r, long orig, long dest) {
 
 int radio_getNumberOfRelationsFromId(const Radio *r, long id) {
   int i,rel=0;
-  if (!r) {
-    return -1; //Hay que devolver -1 pero ERROR=0
+  if (!r || id<0) {
+    return NO_RELATIONS;
   }
 
   for (i=0; i<(radio_getNumberOfMusic(r)); i++) {
@@ -183,12 +186,17 @@ int radio_getNumberOfRelationsFromId(const Radio *r, long id) {
 
 long *radio_getRelationsFromId(const Radio *r, long id) {
   long *array=NULL;
-  int i,j=0;
-  if (!r) {
-    return ERROR; //Hay que devolver -1 pero ERROR=0
+  int i,j=0,size;
+  if (!r || id<0) {
+    return NULL;
   }
 
-  array= (long*)calloc(radio_getNumberOfMusic(r),sizeof(long));
+  size=radio_getNumberOfRelationsFromId(r,id);
+  if (size==0) {
+    return NULL;
+  }
+  
+  array=(long*)calloc(size,sizeof(long));
   if (array==NULL) {
     return ERROR;
   }

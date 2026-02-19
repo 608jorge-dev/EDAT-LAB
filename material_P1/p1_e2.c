@@ -8,56 +8,48 @@ int main () {
     Radio *r1=NULL;
     int i;
     long *array=NULL;
-    //FILE *f;
-    //char name[20];
-
-    /*printf ("Escriba el nombre del archivo final:");
-    scanf ("%s", name);
-    if (!(fopen(name, "w"))){
-        return -1;
-    }*/
     
     //Radio initialization and music adition
     r1=radio_init();
     fprintf (stdout, "Inserting Paint It, Black... ");
-    if (radio_newMusic(r1,"id:111 title:Paint it, black artist:The Rolling Stones duration:202")==ERROR){
-        fprintf (stdout, "result...: 0");
-    }
-    else if (radio_newMusic(r1,"id:111 title:Paint it, black artist:The Rolling Stones duration:202")==OK){
+    if (radio_newMusic(r1,"id:\"111\" title:\"Paint it, black\" artist:\"The Rolling Stones\" duration:\"202\"")==OK){
         fprintf (stdout, "result...: 1");
+    }
+    else {
+        fprintf (stdout, "result...: 0");
     }
     fprintf (stdout, "\nInserting Every Breath You Take...");
-    if (radio_newMusic(r1,"id:222 title:Every Breath you take artist:The Police duration:253")==ERROR){
-        fprintf (stdout, "result...: 0");
-    }
-    else if (radio_newMusic(r1,"id:222 title:Every Breath you take artist:The Police duration:253")==OK) {
+    if (radio_newMusic(r1,"id:\"222\" title:\"Every Breath you take\" artist:\"The Police\" duration:\"253\"")==OK){
         fprintf (stdout, "result...: 1");
     }
-
+    else {
+        fprintf (stdout, "result...: 0");
+    }
+   
     //Relation between 222->111
     fprintf (stdout, "\n\nInserting radio recommendation: 222->111...");
-    if ((radio_newRelation(r1, 222, 111))== ERROR) {
-        fprintf (stdout, "result...: 0");
-    }
-    else if ((radio_newRelation(r1, 222, 111))== OK) {
+    if ((radio_newRelation(r1, 222, 111))== OK) {
         fprintf (stdout, "result...: 1");
     }
-    fprintf (stdout,"\n\n111 -> 222?");
-    if (radio_relationExists(r1, 111, 222)==FALSE){
-        fprintf(stdout, " No");
+    else {
+        fprintf (stdout, "result...: 0");
     }
-    else if ((radio_relationExists(r1, 111, 111)==TRUE)){
-        fprintf (stdout, " Yes");
+    fprintf (stdout,"\n\n111 -> 222?");
+    if (radio_relationExists(r1, 111, 222)==TRUE){
+        fprintf(stdout, " Yes");
+    }
+    else {
+        fprintf (stdout, " No");
     }
     fprintf (stdout,"\n222 -> 111?");
-    if (radio_relationExists(r1, 222, 111)==FALSE){
-        fprintf(stdout, " No");
+    if (radio_relationExists(r1, 222, 111)==TRUE){
+        fprintf(stdout, " Yes");
     }
-    else if ((radio_relationExists(r1, 222, 111)==TRUE)){
-        fprintf (stdout, " Yes");
+    else {
+        fprintf (stdout, " No");
     }
-    fprintf (stdout, "\nNumber of connections from 111: %d ", radio_getNumberOfRelations(r1));
-    fprintf (stdout, "\nNumber of connections from 222: %d", radio_getNumberOfRelations(r1));;
+    fprintf (stdout, "\nNumber of connections from 111: %d ", radio_getNumberOfRelationsFromId(r1, 111));
+    fprintf (stdout, "\nNumber of connections from 222: %d", radio_getNumberOfRelationsFromId(r1, 222));;
 
     //Relations to Paint It, Black
     fprintf (stdout, "\n\nRadio recommendations from Paint it, Black: ");
@@ -69,6 +61,7 @@ int main () {
     //Print all radio (relations included)
     fprintf (stdout, "\n\nAll radio recommendations: \n");
     radio_print(stdout, r1);
+    
 
     //free r1
     radio_free(r1);

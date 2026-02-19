@@ -23,6 +23,7 @@
 #define NO_DUR 0
 #define DUR_INIT 0
 #define DIF_CMP -1
+#define ERROR_CMP -2
 #define NO_PRINT -1
 
 /** 
@@ -93,7 +94,6 @@ Music *music_initFromString(char *descr);
  */
 void music_free (void * m);
 
-
 /**
  * @brief  Gets the Music id.
  *
@@ -102,7 +102,6 @@ void music_free (void * m);
  * @return  Returns the id of the given Music, or -1 in case of error.
  */
 long music_getId (const Music * m);
-
 
 /**
  * @brief Gets the Music title.
@@ -114,7 +113,6 @@ long music_getId (const Music * m);
  */
 const char* music_getTitle (const Music * m);
 
-
 /**
  * @brief Gets the Music artist.
  *
@@ -125,7 +123,6 @@ const char* music_getTitle (const Music * m);
  */
 const char* music_getArtist (const Music * m);
 
-
 /**
  * @brief Gets the Music duration.
  *
@@ -134,7 +131,6 @@ const char* music_getArtist (const Music * m);
  * @return Returns the duration of the given Music, or -1 in case of error.
  */
 unsigned short music_getDuration (const Music * m);
-
 
 /**
  * @brief Gets the state of a given Music.
@@ -146,7 +142,6 @@ unsigned short music_getDuration (const Music * m);
  */
 State music_getState (const Music * m);
 
-
 /**
  * @brief Modifies the id of a given Music.
  *
@@ -156,7 +151,6 @@ State music_getState (const Music * m);
  * @return Returns OK or ERROR in case of error 
  */
 Status music_setId (Music * m, const long id);
-
 
 /**
  * @brief Modifies the title of a given Music
@@ -168,7 +162,6 @@ Status music_setId (Music * m, const long id);
  */
 Status music_setTitle (Music * m, const char * title);
 
-
 /**
  * @brief Modifies the artist of a given Music
  *
@@ -178,7 +171,6 @@ Status music_setTitle (Music * m, const char * title);
  * @return  Returns OK or ERROR in case of error.
  */
 Status music_setArtist (Music * m, const char * artist);
-
 
 /**
  * @brief Modifies the duration of a given Music
@@ -190,7 +182,6 @@ Status music_setArtist (Music * m, const char * artist);
  */
 Status music_setDuration (Music * m, const unsigned short duration);
 
-
 /**
  * @brief Modifies the state of a given Music
  *
@@ -200,8 +191,6 @@ Status music_setDuration (Music * m, const unsigned short duration);
  * @return Returns OK or ERROR in case of error.
  */
 Status music_setState (Music * m, const State state);
-
-
 
 /**
  * @brief Compares two music.
@@ -218,7 +207,6 @@ Status music_setState (Music * m, const State state);
  * returns the result of comparing their artists
  */
 int music_cmp (const void * m1, const void * m2);
-
 
 /**
  * @brief Reserves memory for a Music where it copies the data from
@@ -242,7 +230,6 @@ int music_cmp (const void * m1, const void * m2);
  */
 void * music_copy (const void * src);
 
-
 /** 
  * @brief Prints in pf the data of a Music.
  * 
@@ -263,7 +250,6 @@ void * music_copy (const void * src);
  * successfully. If there have been errors returns -1.
  */
 int music_plain_print (FILE * pf, const void * m);
-
 
 /** 
  * @brief Prints in pf the formatted data of a Music.
@@ -287,6 +273,5 @@ int music_plain_print (FILE * pf, const void * m);
  * successfully. If there have been errors returns -1.
  */
 int music_formatted_print (FILE * pf, const void * m);
-
 
 #endif /* Music_H_ */

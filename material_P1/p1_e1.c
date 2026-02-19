@@ -33,20 +33,33 @@ int main () {
     music_formatted_print(stdout, m1);
     music_formatted_print(stdout, m2);
     printf ("\n");
-    printf ("Music compare: %d",music_cmp(m1,m2));
-    printf ("%s", music_getTitle(m2));
+    fprintf (stdout, "\nEquals? ");
+    if (music_cmp(m1,m2)==0)   {
+        fprintf (stdout, "Yes");
+    } 
+    else {
+        fprintf (stdout, "No");
+    }
+    printf ("\nMusic 2 title: %s", music_getTitle(m2));
 
     //set m3
     Music *m3=NULL;
     m3=music_copy(m1);
     
     //print m3
-    fprintf (stdout,"\n%ld", music_getId(m3));
+    fprintf (stdout,"\nMusic 3 id: %ld\n", music_getId(m3));
     music_formatted_print(stdout, m1);
     music_formatted_print(stdout, m3);
-    fprintf (stdout, "\n");
-    printf ("Music compare: %d",music_cmp(m1,m2));
-    
+    fprintf (stdout, "\nEquals? ");
+    if (music_cmp(m1,m3)==0)   {
+        fprintf (stdout, "Yes");
+    } 
+    else {
+        fprintf (stdout, "No");
+    }
+
+    fprintf (stdout,"\n");
+
     //free m1, m2, m3
     music_free(m1);
     music_free(m2);

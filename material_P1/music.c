@@ -217,13 +217,13 @@ Status music_setState (Music * m, const State state) {
 int music_cmp (const void * m1, const void * m2){
   Music *one=NULL, *two=NULL;
   if (!m1 || !m2){
-    return ERROR;
+    return ERROR_CMP;
   }
   one = (Music*) m1;
   two = (Music*) m2;
   
   if (!one || !two){
-    return ERROR;
+    return ERROR_CMP;
   }
 
   if ((one->id) == two->id){
@@ -260,19 +260,14 @@ void * music_copy (const void * src) {
 
 int music_plain_print (FILE * pf, const void * m){
   Music * aux;
-	int counter = 0, minutes = 0, sec=0;
+	int counter = 0;
   if (!pf || !m) return NO_PRINT;
 
   aux = (Music*) m;
-
-  if (!aux->duration || aux->duration <= 0) return NO_PRINT;
-	  minutes = aux->duration / 60;
-    sec = aux->duration % 60;
- 
   counter += fprintf(pf, "[%ld, ", aux->id);
   counter += fprintf(pf, "%s, ", aux->title);
 	counter += fprintf(pf, "%s, ", aux->artist);
-	counter += fprintf(pf, "%02d %02d, ", minutes, sec);
+	counter += fprintf(pf, "%u, ", aux->duration);
   counter += fprintf(pf, "%d]", aux->state);
 	
 	return counter;
