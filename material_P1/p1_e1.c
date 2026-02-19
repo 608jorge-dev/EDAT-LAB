@@ -6,14 +6,7 @@
 
 int main () {
     Music *m1=NULL, *m2=NULL;
-    //FILE *f;
-    //char name[20];
-
-    /*printf ("Escriba el nombre del archivo final:");
-    scanf ("%s", name);
-    if (!(fopen(name, "w"))){
-        return -1;
-    }*/
+    
 
     //set m1
     m1=music_init();

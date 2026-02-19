@@ -54,10 +54,12 @@ int main () {
     //Relations to Paint It, Black
     fprintf (stdout, "\n\nRadio recommendations from Paint it, Black: ");
     array=radio_getRelationsFromId(r1, 111);
-    for (i=0;i<radio_getNumberOfMusic(r1); i++){
+    if (array!=NULL) {
+        for (i=0;i<radio_getNumberOfMusic(r1); i++){
         fprintf (stdout, "%ld", array[i]);
+        }
     }
-
+    
     //Print all radio (relations included)
     fprintf (stdout, "\n\nAll radio recommendations: \n");
     radio_print(stdout, r1);

@@ -259,7 +259,7 @@ void * music_copy (const void * src) {
 }
 
 int music_plain_print (FILE * pf, const void * m){
-  Music * aux;
+  Music *aux=NULL;
 	int counter = 0;
   if (!pf || !m) return NO_PRINT;
 

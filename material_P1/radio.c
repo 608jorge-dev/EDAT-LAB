@@ -27,8 +27,6 @@ Private function:
  *
  * @return The position of the music in the radio if found, -1 otherwise.
  */
-int radio_musicPosition(const Radio *r, long id);
-
 int radio_musicPosition(const Radio *r, long id) {
   int i;
 
@@ -42,8 +40,21 @@ int radio_musicPosition(const Radio *r, long id) {
   return NO_MUSICPOSITION;
 }
 
+/**
+ * @brief Gets the music structure in the songs array
+ *
+ * @param r Pointer to the radio.
+ * @param id ID of the music to be returned.
+ *
+ * @return The music structure, NULL otherwise.
+ */
+Music *radio_getMusic(const Radio *r, long id)  {
+  if (!r || id<0) {
+    return NULL;
+  }
+  return r->songs[radio_musicPosition(r, id)];
+}
 /*----------------------------------------------------------------------------------------*/
-
 Radio *radio_init() {
   Radio *r = NULL;
   int i, j;
@@ -183,27 +194,26 @@ int radio_getNumberOfRelationsFromId(const Radio *r, long id) {
 
 long *radio_getRelationsFromId(const Radio *r, long id) {
   long *array=NULL;
-  int i,j=0,size;
+  int i,j,size=0;
   if (!r || id<0 ||(radio_contains(r,id)==FALSE)) {
     return NULL;
   }
-
   size=radio_getNumberOfRelationsFromId(r,id);
   if (size==0) {
     return NULL;
   }
-  
   array=(long*)calloc(size,sizeof(long));
   if (array==NULL) {
     return NULL;
   }
 
-  for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {
-    if ((radio_relationExists(r, id, music_getId(r->songs[i])))==TRUE){
+  for (i=0,j=0; i<(radio_getNumberOfMusic(r)); i++)  {
+    if(radio_relationExists(r, id, music_getId(r->songs[i]))==TRUE)  {
       array[j]=music_getId(r->songs[i]);
       j++;
     }
   }
+
   return array;
 }
 
@@ -215,11 +225,15 @@ int radio_print (FILE *pf, const Radio *r) {
   }
 
   for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {
-    music_plain_print(pf,r->songs[i]);
+    music_plain_print(pf,radio_getMusic(r, music_getId(r->songs[i])));
     fprintf (pf, ":");
+
     ar=radio_getRelationsFromId(r, music_getId(r->songs[i]));
-    for (j=0; j<(radio_getNumberOfMusic(r)); j++)  {
-      music_plain_print(pf,r->songs[radio_musicPosition(r, ar[j])]);
+    if (ar!=NULL)  {
+      for (j=0; j<(radio_getNumberOfMusic(r)); j++)  {
+      music_plain_print(pf,r->songs[radio_musicPosition(r,ar[j])]);
+      fprintf (pf, "\t");
+      }
     }
     fprintf (pf, "\n");
   }
