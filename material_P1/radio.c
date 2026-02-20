@@ -40,20 +40,6 @@ int radio_musicPosition(const Radio *r, long id) {
   return NO_MUSICPOSITION;
 }
 
-/**
- * @brief Gets the music structure in the songs array
- *
- * @param r Pointer to the radio.
- * @param id ID of the music to be returned.
- *
- * @return The music structure, NULL otherwise.
- */
-Music *radio_getMusic(const Radio *r, long id)  {
-  if (!r || id<0) {
-    return NULL;
-  }
-  return r->songs[radio_musicPosition(r, id)];
-}
 /*----------------------------------------------------------------------------------------*/
 Radio *radio_init() {
   Radio *r = NULL;
@@ -218,21 +204,23 @@ long *radio_getRelationsFromId(const Radio *r, long id) {
 }
 
 int radio_print (FILE *pf, const Radio *r) {
-  int i,j;
+  int i,j,pos;
   long *ar=NULL;
   if (!pf || !r) {
     return NO_PRINT;
   }
 
   for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {
-    music_plain_print(pf,radio_getMusic(r, music_getId(r->songs[i])));
+    //printing music with i position in the array
+    music_plain_print(pf,(r->songs[i]));
     fprintf (pf, ":");
 
+    //printing recommendations
     ar=radio_getRelationsFromId(r, music_getId(r->songs[i]));
-    if (ar!=NULL)  {
-      for (j=0; j<(radio_getNumberOfMusic(r)); j++)  {
-      music_plain_print(pf,r->songs[radio_musicPosition(r,ar[j])]);
-      fprintf (pf, "\t");
+    if (ar!=NULL) {
+      for (j=0; j<radio_getNumberOfRelationsFromId(r,music_getId(r->songs[i])); j++)  {
+        pos=radio_musicPosition(r, ar[j]);
+        music_plain_print(pf, r->songs[pos]);
       }
     }
     fprintf (pf, "\n");

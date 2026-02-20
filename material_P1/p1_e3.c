@@ -14,6 +14,7 @@ int main () {
     }
     r1=radio_init();
     if (radio_readFromFile(fIn,r1)== OK) {
+        fprintf (stdout, "Radio recommendations: \n");
         radio_print(stdout,r1);
     }
     else {
