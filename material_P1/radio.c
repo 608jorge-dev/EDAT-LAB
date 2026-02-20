@@ -244,7 +244,7 @@ Status radio_readFromFile (FILE *fin, Radio *r) {
   char line[1024];
   int n_music, i;
   long orig, dest;
-  char *token;
+  char *token=NULL;
 
   if (!fin || !r)
     return ERROR;
