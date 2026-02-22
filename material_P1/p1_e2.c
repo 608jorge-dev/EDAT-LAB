@@ -67,5 +67,6 @@ int main () {
 
     //free r1
     radio_free(r1);
+    free(array);
     return 0;
 }

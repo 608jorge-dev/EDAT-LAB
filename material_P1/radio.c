@@ -224,6 +224,7 @@ int radio_print (FILE *pf, const Radio *r) {
       }
     }
     fprintf (pf, "\n");
+    free (ar);
   }
   return OK;
 }
