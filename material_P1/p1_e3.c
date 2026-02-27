@@ -21,7 +21,8 @@ int main () {
         fprintf (stdout, "Error reading the file.");
     }
     
-    //free r1 and file 
+    /*free r1 and file */
     radio_free(r1);
     fclose (fIn);
+    return 1;
 }

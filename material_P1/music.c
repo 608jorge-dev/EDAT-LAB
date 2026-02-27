@@ -56,8 +56,11 @@ Music *music_initFromString(char *descr) {
 
   if (!descr) return NULL;
 
-  buffer = strdup(descr);          /* copiar entrada */
-  if (!buffer) return NULL;
+  buffer = malloc(strlen(descr)+1);          
+  if (!buffer)  {
+    return NULL;
+  }
+  strcpy(buffer,descr);
 
   m = music_init();
   if (!m) {

@@ -147,7 +147,7 @@ int radio_getNumberOfRelations(const Radio *r) {
   return r->num_relations;
 }
 
-//*******************************************************//
+/*******************************************************/
 Bool radio_relationExists(const Radio *r, long orig, long dest) {
   if (!r || orig<0 || dest<0) {
     return FALSE;
@@ -211,11 +211,11 @@ int radio_print (FILE *pf, const Radio *r) {
   }
 
   for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {
-    //printing music with i position in the array
+    /*printing music with i position in the array*/
     music_plain_print(pf,(r->songs[i]));
     fprintf (pf, ":");
 
-    //printing recommendations
+    /*printing recommendations*/
     ar=radio_getRelationsFromId(r, music_getId(r->songs[i]));
     if (ar!=NULL) {
       for (j=0; j<radio_getNumberOfRelationsFromId(r,music_getId(r->songs[i])); j++)  {
@@ -267,7 +267,7 @@ Status radio_readFromFile (FILE *fin, Radio *r) {
 
     orig = atol(token);
 
-    token = strtok(NULL, " \n"); //aqui, para el strtok, se usa NULL ya que esta funcion recuerda internamente donde se quedo
+    token = strtok(NULL, " \n"); /*aqui, para el strtok, se usa NULL ya que esta funcion recuerda internamente donde se quedo*/
 
     while (token) {
       dest = atol(token);

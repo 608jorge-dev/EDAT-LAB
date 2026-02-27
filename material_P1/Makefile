@@ -1,6 +1,6 @@
 ########################################################
 CC=gcc
-CFLAGS= -g -Wall
+CFLAGS= -g -Wall -pedantic -std=c90
 EJS = p1_e1 p1_e2 p1_e3
 ########################################################
 OBJECTSP1E1 = p1_e1.o music.o
@@ -50,8 +50,9 @@ run:
 	./p1_e3 g1.txt
 
 runv:
+	
 	@echo ">>>>>>Running p1_e1 with valgrind"
-	valgrind --leak-check=full ./p1_e1
+	valgrind --leak-check=full ./p1_e1 
 	@echo ">>>>>>Running p1_e2 with valgrind"
 	valgrind --leak-check=full --track-origins=yes ./p1_e2 
 	@echo ">>>>>>Running p1_e3 with valgrind"
