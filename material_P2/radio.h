@@ -23,13 +23,13 @@ typedef struct _Radio Radio;
 /**
  * @brief Creates a new empty radio.
  *
- * Allocates memory for a new radio and initializes it to be empty 
+ * Allocates memory for a new radio and initializes it to be empty
  * (no music and no relations).
  *
- * @return A pointer to the radio if it was correctly allocated, 
+ * @return A pointer to the radio if it was correctly allocated,
  * NULL otherwise.
  **/
-Radio * radio_init();
+Radio *radio_init();
 
 /**
  * @brief Frees a radio.
@@ -44,13 +44,13 @@ void radio_free(Radio *r);
  * @brief Inserts a new music in a radio.
  *
  * Creates a music by calling music_initFromString and adds it to
- * a radio. If a music with the same id already exists in the radio, 
- * it is not added. 
+ * a radio. If a music with the same id already exists in the radio,
+ * it is not added.
  *
  * @param r Pointer to the radio.
  * @param desc Description of the music.
  *
- * @return Returns OK if the music could be created (or if it exists 
+ * @return Returns OK if the music could be created (or if it exists
  * already), ERROR otherwise.
  **/
 Status radio_newMusic(Radio *r, char *desc);
@@ -85,7 +85,7 @@ Bool radio_contains(const Radio *r, long id);
  *
  * @param r Pointer to the radio.
  *
- * @return Returns The number of music in the radio, or -1 if 
+ * @return Returns The number of music in the radio, or -1 if
  * there is any error.
  **/
 int radio_getNumberOfMusic(const Radio *r);
@@ -95,7 +95,7 @@ int radio_getNumberOfMusic(const Radio *r);
  *
  * @param r Pointer to the radio.
  *
- * @return Returns The number of relations in the radio, or -1 if 
+ * @return Returns The number of relations in the radio, or -1 if
  * there is any error.
  **/
 int radio_getNumberOfRelations(const Radio *r);
@@ -118,13 +118,13 @@ Bool radio_relationExists(const Radio *r, long orig, long dest);
  * @param r Pointer to the radio.
  * @param id ID of the origin music.
  *
- * @return Returns the total number of relation starting at 
+ * @return Returns the total number of relation starting at
  * music with ID id, or -1 if there is any error.
  **/
 int radio_getNumberOfRelationsFromId(const Radio *r, long id);
 
 /**
- * @brief Returns an array with the ids of all the music which a 
+ * @brief Returns an array with the ids of all the music which a
  * given music connects to.
  *
  * This function allocates memory for the array.
@@ -132,17 +132,16 @@ int radio_getNumberOfRelationsFromId(const Radio *r, long id);
  * @param r Pointer to the radio.
  * @param id ID of the origin music.
  *
- * @return Returns an array with the ids of all the music to which 
+ * @return Returns an array with the ids of all the music to which
  * the music with ID id is connected, or NULL if there is any error.
  */
 long *radio_getRelationsFromId(const Radio *r, long id);
-
 
 /**
  * @brief Prints a radio.
  *
  * Prints the radio g to the file pf.
- * The format to be followed is: print a line by music with the 
+ * The format to be followed is: print a line by music with the
  * information associated with the music and then their connections
  *
  * For example:
@@ -157,8 +156,7 @@ long *radio_getRelationsFromId(const Radio *r, long id);
  *
  * @return The number of characters printed, or -1 if there is any error.
  */
-int radio_print (FILE *pf, const Radio *r);
-
+int radio_print(FILE *pf, const Radio *r);
 
 /**
  * @brief Reads a radio definition from a text file.
@@ -167,8 +165,8 @@ int radio_print (FILE *pf, const Radio *r);
  * and fills the radio r.
  *
  * The first line in the file contains the number of music.
- * Then one line per music with the music description.  
- * Finally one line per relation, with the ids of the origin and 
+ * Then one line per music with the music description.
+ * Finally one line per relation, with the ids of the origin and
  * the destination (this is one way only)
  *
  * For example:
@@ -189,7 +187,15 @@ int radio_print (FILE *pf, const Radio *r);
  *
  * @return OK or ERROR
  */
-Status radio_readFromFile (FILE *fin, Radio *r);
+Status radio_readFromFile(FILE *fin, Radio *r);
 
-Music *radio_getMusic( Radio *r, int position);
+/**
+ * @brief Gets a certain music specified in the integer position
+ *
+ * @param r Pointer to the radio.
+ * @param  position an integer storing the music position in the array
+ *
+ * @return A pointer to the selected music structure
+ **/
+Music *radio_getMusic(Radio *r, int position);
 #endif /* radio_H */
