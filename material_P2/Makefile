@@ -49,7 +49,7 @@ clean:
 
 run:
 	@echo ">>>>>>Running p2_e1"
-	./p2_e1 playlist1.txt
+	./p2_e1 radio.txt
 	@echo ">>>>>>Running p2_e2a"
 	./p2_e2a playlist1.txt playlist2.txt
 	@echo ">>>>>>Running p2_e2b"
@@ -59,7 +59,7 @@ run:
 
 runv:
 	@echo ">>>>>>Running p2_e1 with valgrind"
-	valgrind --leak-check=full ./p2_e1 playlist1.txt
+	valgrind --leak-check=full ./p2_e1 radio.txt
 	@echo ">>>>>>Running p2_e2a with valgrind"
 	valgrind --leak-check=full --track-origins=yes ./p2_e2a playlist1.txt playlist2.txt
 	@echo ">>>>>>Running p2_e2b with valgrind"

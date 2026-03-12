@@ -85,7 +85,8 @@ int main(int argc, char **argv)
         }
         stack_push(sl, m);
     }
-
+    
+    radio_print(stdout, r1);
     //Using DFS Algorithm
     if (radio_depthSearch (r1, from_id, to_id) == ERROR)  {
         fprintf(stderr, "Error while using the DFS algorithm.\n");
@@ -114,9 +115,12 @@ Status radio_depthSearch (Radio *r, long from_id, long to_id) {
 
   from = radio_musicPosition(r, from_id);
   to = radio_musicPosition(r, to_id);
-
   mo = radio_getMusic(r, from);
   mf = radio_getMusic(r, to);
+
+  fprintf (stdout, "\nFrom music with id: %ld\n", from_id);
+  fprintf (stdout, "To music with id: %ld\n", to_id);
+  fprintf (stdout, "Music exploration path: \n");
 
   if (music_setState (mo, NOT_LISTENED) == ERROR || music_setState (mf, NOT_LISTENED) == ERROR) {
     return ERROR;
@@ -132,6 +136,7 @@ Status radio_depthSearch (Radio *r, long from_id, long to_id) {
   while (stack_isEmpty(sl) == FALSE && st == OK)    {
     mo = stack_pop(sl);
     music_plain_print(stdout, mo);
+    fprintf (stdout, "\n");
     
     if (music_cmp(mo, mf) == 0)   {
         st = ERROR;
@@ -140,11 +145,9 @@ Status radio_depthSearch (Radio *r, long from_id, long to_id) {
     else {
         for (i=from; i<to; i++)   {
             for (j=from; j<to; j++)    {
-                if (radio_relationExists(r, music_getId(radio_getMusic(r, i)), music_getId(radio_getMusic(r, j))) == TRUE) {
-                    if (music_getState(radio_getMusic(r, j)) == NOT_LISTENED) {
+                if (radio_relationExists(r, music_getId(radio_getMusic(r, i)), music_getId(radio_getMusic(r, j))) == TRUE && (music_getState(radio_getMusic(r, j)) == NOT_LISTENED)) {
                         music_setState (radio_getMusic(r, j), LISTENED);
                         stack_push (sl, radio_getMusic(r, j));
-                    }
                 }
             }
             
