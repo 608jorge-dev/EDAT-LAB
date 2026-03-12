@@ -68,7 +68,7 @@ Status radio_newMusic(Radio *r, char *desc) {
 
   r->songs[r->num_music] = m;
   r->num_music++;
-  music_setIndex(m, radio_getNumberOfMusic(r));
+  music_setIndex(m, radio_getNumberOfMusic(r)-1);
 
   return OK;
 }
