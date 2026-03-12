@@ -11,36 +11,6 @@ struct _Radio {
   int num_relations;
 };
 
-/*----------------------------------------------------------------------------------------*/
-/*
-Private function:
-*/
-
-/**
- * @brief Finds the position of a music in the radio by its ID.
- *
- * Searches sequentially through the array of musics stored in the radio
- * to locate the music with the specified ID.
- *
- * @param r Pointer to the radio.
- * @param id ID of the music to be searched.
- *
- * @return The position of the music in the radio if found, -1 otherwise.
- */
-int radio_musicPosition(const Radio *r, long id) {
-  int i;
-
-  if (!r || id<0){ return NO_MUSICPOSITION;}
-
-  for (i = 0; i < r->num_music; i++) {
-    if (music_getId(r->songs[i]) == id)
-      return i;
-  }
-
-  return NO_MUSICPOSITION;
-}
-
-/*----------------------------------------------------------------------------------------*/
 Radio *radio_init() {
   Radio *r = NULL;
   int i, j;
@@ -98,6 +68,7 @@ Status radio_newMusic(Radio *r, char *desc) {
 
   r->songs[r->num_music] = m;
   r->num_music++;
+  music_setIndex(m, radio_getNumberOfMusic(r));
 
   return OK;
 }
@@ -123,16 +94,16 @@ Status radio_newRelation(Radio *r, long orig, long dest) {
 }
 
 Bool radio_contains(const Radio *r, long id) {
-  int i;
+  int position;
 
   if (!r || id<0) return FALSE;
 
-  for (i = 0; i < r->num_music; i++) {
-    if (music_getId(r->songs[i]) == id)
-      return TRUE;
+  position = radio_musicPosition(r, id);
+  if (position == -1) {
+    return FALSE;
   }
 
-  return FALSE;
+  return TRUE;
 }
 
 int radio_getNumberOfMusic(const Radio *r) {
@@ -203,11 +174,24 @@ long *radio_getRelationsFromId(const Radio *r, long id) {
   return array;
 }
 
+int radio_musicPosition(const Radio *r, long id) {
+  int i;
+
+  if (!r || id<0){ return NO_MUSICPOSITION;}
+
+  for (i = 0; i < r->num_music; i++) {
+    if (music_getId(r->songs[i]) == id)
+      return i;
+  }
+
+  return NO_MUSICPOSITION;
+}
+
 int radio_print (FILE *pf, const Radio *r) {
   int i,j,pos;
   long *ar=NULL;
   if (!pf || !r) {
-    return NO_PRINT;
+    return ERROR_PRINT;
   }
 
   for (i=0; i<(radio_getNumberOfMusic(r)); i++)  {

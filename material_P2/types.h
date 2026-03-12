@@ -1,3 +1,4 @@
+
 /**
  * @file types.h
  * @author Profesores EDAT
@@ -12,6 +13,20 @@
 
 #ifndef TYPES_H_
 #define TYPES_H_
+
+#define MAX_MSC 4096
+#define NO_MUSICPOSITION -1
+#define NO_NUMMUSIC -1
+#define NO_RELATIONS -1
+#define STR_LENGTH 64           
+#define NO_ID -1
+#define ID_INIT 0
+#define NO_DUR 0
+#define DUR_INIT 0
+#define DIF_CMP -1
+#define ERROR_CMP -2
+#define ERROR_PRINT -1
+#define ERROR_INDEX -1
 
 /**
  * @brief ADT Boolean

@@ -17,15 +17,6 @@
 #include <stdlib.h>
 #include "types.h"
 
-#define STR_LENGTH 64           
-#define NO_ID -1
-#define ID_INIT 0
-#define NO_DUR 0
-#define DUR_INIT 0
-#define DIF_CMP -1
-#define ERROR_CMP -2
-#define NO_PRINT -1
-
 /** 
  * @brief State to characterize the Music state (to be used in P2)
  *
@@ -143,6 +134,16 @@ unsigned short music_getDuration (const Music * m);
 State music_getState (const Music * m);
 
 /**
+ * @brief Gets the index of a given Music.
+ *
+ * @param Music pointer
+ *
+ * @return Returns the index of a given Music, or ERROR_INDEX in 
+ * case of error.
+ */
+int music_getIndex(const Music *m);
+
+/**
  * @brief Modifies the id of a given Music.
  *
  * @param m Music pointer
@@ -191,6 +192,16 @@ Status music_setDuration (Music * m, const unsigned short duration);
  * @return Returns OK or ERROR in case of error.
  */
 Status music_setState (Music * m, const State state);
+
+/**
+ * @brief Modifies the index of a given Music
+ *
+ * @param m Music pointer
+ * @param index New music index
+ *
+ * @return Returns OK or ERROR in case of error.
+ */
+Status music_setIndex(Music *m, int index); 
 
 /**
  * @brief Compares two music.

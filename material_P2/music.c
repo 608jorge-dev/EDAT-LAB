@@ -20,6 +20,7 @@ struct _Music {
   char artist[STR_LENGTH];
   unsigned short duration;
   State state;
+  int index;
 };
 
 /*----------------------------------------------------------------------------------------*/
@@ -118,6 +119,7 @@ Music* music_init (){
   music_setState(m, NOT_LISTENED);
   music_setTitle(m, "");
   music_setArtist(m, "");
+  music_setIndex(m, 0);
 
   return m;
 }
@@ -175,7 +177,12 @@ Status music_setId (Music *m, const long id){
   m->id= id;
 
   return OK;
-  
+}
+
+int music_getIndex(const Music *m) {
+  if (!m) return ERROR_INDEX;
+
+  return m->index;
 }
 
 Status music_setTitle (Music * m, const char * title) {
@@ -214,6 +221,12 @@ Status music_setState (Music * m, const State state) {
   return OK;
 }
 
+Status music_setIndex(Music *m, int index) {
+  if (!m) return ERROR;
+  m->index = index;
+  return OK;
+}
+
 int music_cmp (const void * m1, const void * m2){
   Music *one=NULL, *two=NULL;
   if (!m1 || !m2){
@@ -226,12 +239,12 @@ int music_cmp (const void * m1, const void * m2){
     return ERROR_CMP;
   }
 
-  if ((one->id) == two->id){
-    if (strcmp(one->title, two->title)==0){
-      return strcmp(one->artist, two->artist);
+  if (music_getId(one) == music_getId(two)){
+    if (strcmp(music_getTitle(one), music_getTitle(two))==0){
+      return strcmp(music_getArtist(one), music_getArtist(two));
     }
     else{
-      return strcmp(one->title, two->title);
+      return strcmp(music_getTitle(one), music_getTitle(two));
     }
   }
   else{
@@ -249,11 +262,12 @@ void * music_copy (const void * src) {
 
   if (!copy) return NULL;
 
-  copy->id = orig->id;
-  strcpy(copy->title, orig->title);
-  strcpy(copy->artist, orig->artist);
-  copy->duration = orig->duration;
-  copy->state = orig->state;
+  copy->id = music_getId(orig);
+  strcpy(copy->title, music_getTitle(orig));
+  strcpy(copy->artist, music_getArtist(orig));
+  copy->duration = music_getDuration(orig);
+  copy->state = music_getState(orig);
+  copy->index = music_getIndex(orig);
 
   return copy;
 }
@@ -261,14 +275,15 @@ void * music_copy (const void * src) {
 int music_plain_print (FILE * pf, const void * m){
   Music *aux=NULL;
 	int counter = 0;
-  if (!pf || !m) return NO_PRINT;
+  if (!pf || !m) return ERROR_PRINT;
 
   aux = (Music*) m;
   counter += fprintf(pf, "[%ld, ", aux->id);
   counter += fprintf(pf, "%s, ", aux->title);
 	counter += fprintf(pf, "%s, ", aux->artist);
-	counter += fprintf(pf, "%u, ", aux->duration);
+	counter += fprintf(pf, "%hu, ", aux->duration);
   counter += fprintf(pf, "%d]", aux->state);
+  counter += fprintf(pf, "%d]", aux->index);
 	
 	return counter;
 }
@@ -276,11 +291,11 @@ int music_plain_print (FILE * pf, const void * m){
 int music_formatted_print (FILE * pf, const void * m) {
 	Music * aux;
 	int counter = 0, minutes, sec;
-	if (!pf || !m) return NO_PRINT;
+	if (!pf || !m) return ERROR_PRINT;
 
 	aux = (Music*) m;
 	
-	if (!aux->duration || aux->duration <= 0) return NO_PRINT;
+	if (!aux->duration || aux->duration <= 0) return ERROR_PRINT;
 
 	minutes = aux->duration / 60;
   sec = aux->duration % 60;

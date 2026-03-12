@@ -13,12 +13,8 @@
 
 #include "music.h"
 
-#define MAX_MSC 4096
-#define NO_MUSICPOSITION -1
-#define NO_NUMMUSIC -1
-#define NO_RELATIONS -1
-
 typedef struct _Radio Radio;
+
 
 /**
  * @brief Creates a new empty radio.
@@ -136,6 +132,32 @@ int radio_getNumberOfRelationsFromId(const Radio *r, long id);
  * the music with ID id is connected, or NULL if there is any error.
  */
 long *radio_getRelationsFromId(const Radio *r, long id);
+
+/**
+ * @brief Finds the position of a music in the radio by its ID.
+ *
+ * Searches sequentially through the array of musics stored in the radio
+ * to locate the music with the specified ID.
+ *
+ * @param r Pointer to the radio.
+ * @param id ID of the music to be searched.
+ *
+ * @return The position of the music in the radio if found, -1 otherwise.
+ */
+int radio_musicPosition(const Radio *r, long id); 
+
+/**
+* @brief: Makes a search from the origin music to the final music of a radio using the
+* depth-first search algorithm through an ADT Stack
+*
+* The function prints each visited music while traversing the radio
+*
+* @param r, Pointer to radio
+* @param from_id, id of the origin Music
+* @param to_id, id of the destination Music
+* @return The function returns OK or ERROR
+**/
+Status radio_depthSearch (Radio *r, long from_id, long to_id);
 
 /**
  * @brief Prints a radio.
