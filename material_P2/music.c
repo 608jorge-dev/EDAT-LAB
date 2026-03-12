@@ -282,7 +282,7 @@ int music_plain_print (FILE * pf, const void * m){
   counter += fprintf(pf, "%s, ", aux->title);
 	counter += fprintf(pf, "%s, ", aux->artist);
 	counter += fprintf(pf, "%hu, ", aux->duration);
-  counter += fprintf(pf, "%d]", aux->state);
+  counter += fprintf(pf, "%d, ", aux->state);
   counter += fprintf(pf, "%d]", aux->index);
 	
 	return counter;

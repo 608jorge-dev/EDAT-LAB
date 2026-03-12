@@ -24,18 +24,19 @@ int main(int argc, char **argv)
     FILE *fIn = fopen(argv[1], "r");
     Music *m = NULL;
     Stack *sl = NULL;
-    int i, *one = NULL, *two = NULL;
-    
-    one = (*int) argv[2];
-    two = (*int) argv[3];
+    int i;
+    long from_id, to_id;
 
     if (argc < 4)
     {
-        fprintf(stderr, "Error while reading %s file.\n", argv[0]);
+        fprintf(stderr, "Usage: %s <file> <from_id> <to_id>\n", argv[0]);
         return -1;
     }
 
-    if (argv[2]<0 || argv[3]<0)
+    from_id = strtol(argv[2], NULL, 10);
+    to_id   = strtol(argv[3], NULL, 10);
+
+    if (from_id < 0 || to_id < 0)
     {
         fprintf(stderr, "Error while reading argument ids.\n");
         return -1;
@@ -86,7 +87,7 @@ int main(int argc, char **argv)
     }
 
     //Using DFS Algorithm
-    if (radio_depthSearch (r1, argv[2] ,argv[3]) == ERROR)  {
+    if (radio_depthSearch (r1, from_id, to_id) == ERROR)  {
         fprintf(stderr, "Error while using the DFS algorithm.\n");
         radio_free(r1);
         fclose(fIn);
@@ -114,7 +115,10 @@ Status radio_depthSearch (Radio *r, long from_id, long to_id) {
   from = radio_musicPosition(r, from_id);
   to = radio_musicPosition(r, to_id);
 
-  if (music_setState (mo, NOT_LISTENED) == ERROR || music_setState (mf, NOT_LISTENED) == ERROR)   {
+  mo = radio_getMusic(r, from);
+  mf = radio_getMusic(r, to);
+
+  if (music_setState (mo, NOT_LISTENED) == ERROR || music_setState (mf, NOT_LISTENED) == ERROR) {
     return ERROR;
   }
 
