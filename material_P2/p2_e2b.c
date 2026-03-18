@@ -186,6 +186,35 @@ int main(int argc, char **argv)
     stack_free(sl3);
 }
 
+int music_cmp_artist(const void *m1, const void *m2)
+{
+    Music *one = NULL, *two = NULL;
+    if (!m1 || !m2)
+    {
+        return ERROR_CMP;
+    }
+    one = (Music *)m1;
+    two = (Music *)m2;
+
+    if (!one || !two)
+    {
+        return ERROR_CMP;
+    }
+
+    if (strcmp(music_getArtist(m1), music_getArtist(m2)) == 0)
+    {
+        return 0;
+    }
+    else if (strcmp(music_getArtist(m1), music_getArtist(m2)) > 0)
+    {
+        return 1;
+    }
+
+    else
+    {
+        return -1;
+    }
+}
 
 /* Merges both stacks and unites them in a third stack*/
 Status mergeStacks(Stack *sin1, Stack *sin2, Stack *sout, P_stack_ele_cmp f)
@@ -251,36 +280,6 @@ Status mergeStacks(Stack *sin1, Stack *sin2, Stack *sout, P_stack_ele_cmp f)
     }
 
     return OK;
-}
-
-int music_cmp_artist(const void *m1, const void *m2)
-{
-    Music *one = NULL, *two = NULL;
-    if (!m1 || !m2)
-    {
-        return ERROR_CMP;
-    }
-    one = (Music *)m1;
-    two = (Music *)m2;
-
-    if (!one || !two)
-    {
-        return ERROR_CMP;
-    }
-
-    if (strcmp(music_getArtist(m1), music_getArtist(m2)) == 0)
-    {
-        return 0;
-    }
-    else if (strcmp(music_getArtist(m1), music_getArtist(m2)) > 0)
-    {
-        return 1;
-    }
-
-    else
-    {
-        return -1;
-    }
 }
 
 /*Free both radios, both stacks and both files*/

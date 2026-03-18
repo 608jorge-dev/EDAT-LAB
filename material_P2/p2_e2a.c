@@ -177,6 +177,11 @@ int main(int argc, char **argv)
 
 /**
  * @brief: Merges both stacks and unites them in a third stack
+ *
+ * @param sin1 first input stack
+ * @param sin2 second input stack
+ * @param sout  result stack
+ * @return The function returns OK or ERROR
  **/
 Status mergeStacks(Stack *sin1, Stack *sin2, Stack *sout)
 {

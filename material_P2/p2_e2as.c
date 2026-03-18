@@ -5,6 +5,16 @@
 #include "music.h"
 #include "radio.h"
 
+/**
+ * @brief: Merges both stacks and unites them in a third stack
+ *
+ * @param sin1 first input stack
+ * @param sin2 second input stack
+ * @param sout  result stack
+ * @return The function returns OK or ERROR
+ **/
+Status mergeStacks(Stack *sin1, Stack *sin2, Stack *sout);
+
 void freeall(Radio *r1, Radio *r2, Stack *s1, Stack *s2, FILE *f1, FILE *f2);
 
 int main(int argc, char **argv)
@@ -163,6 +173,72 @@ int main(int argc, char **argv)
     // free radios, files and stacks
     freeall(r1, r2, sl1, sl2, fIn1, fIn2);
     stack_free(sl3);
+}
+
+/**
+ * @brief: Merges both stacks and unites them in a third stack
+ *
+ * @param sin1 first input stack
+ * @param sin2 second input stack
+ * @param sout  result stack
+ * @return The function returns OK or ERROR
+ **/
+Status mergeStacks(Stack *sin1, Stack *sin2, Stack *sout)
+{
+    void *e = NULL;
+    Stack *ps = NULL;
+
+    if (!sin1 || !sin2 || !sout)
+    {
+        return ERROR;
+    }
+
+    while (stack_isEmpty(sin1) == FALSE && stack_isEmpty(sin2) == FALSE)
+    {
+        if (stack_top(sin1) > stack_top(sin2))
+        {
+            if (!(e = stack_pop(sin1)))
+            {
+                return ERROR;
+            }
+        }
+        else
+        {
+            if (!(e = stack_pop(sin2)))
+            {
+                return ERROR;
+            }
+        }
+
+        if (stack_push(sout, e) == ERROR)
+        {
+            return ERROR;
+        }
+    }
+
+    if (stack_isEmpty(sin1) == TRUE)
+    {
+        ps = sin2;
+    }
+    else
+    {
+        ps = sin1;
+    }
+
+    while (stack_isEmpty(ps) == FALSE)
+    {
+        if (!(e = stack_pop(ps)))
+        {
+            return ERROR;
+        }
+
+        if (stack_push(sout, e) == ERROR)
+        {
+            return ERROR;
+        }
+    }
+
+    return OK;
 }
 
 /* Free both radios, both stacks and both files*/

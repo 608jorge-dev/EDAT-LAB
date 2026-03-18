@@ -44,16 +44,16 @@ p2_e3s: $(OBJECTSP2E3S)
 
 ########################################################
 
-p2_e1.o: p2_e1.c music.h radio.h
+p2_e1.o: p2_e1.c music.h radio.h 
 	$(CC) $(CFLAGS) -c p2_e1.c
 
-p2_e2a.o: p2_e2a.c music.h radio.h
+p2_e2a.o: p2_e2a.c music.h radio.h 
 	$(CC) $(CFLAGS) -c p2_e2a.c
 
-p2_e2b.o: p2_e2b.c music.h radio.h
+p2_e2b.o: p2_e2b.c music.h radio.h 
 	$(CC) $(CFLAGS) -c p2_e2b.c
 	
-p2_e3.o: p2_e3.c music.h radio.h
+p2_e3.o: p2_e3.c music.h radio.h 
 	$(CC) $(CFLAGS) -c p2_e3.c
 
 ########################################################

@@ -89,26 +89,6 @@ Bool stack_isEmpty(const Stack *s);
 size_t stack_size(const Stack *s);
 
 /**
- * @brief: Merges both stacks and unites them in a third stack
- *
- * @param sin1 first input stack
- * @param sin2 second input stack
- * @param sout  result stack
- * @return The function returns OK or ERROR
- **/
-Status mergeStacksa(Stack *sin1, Stack *sin2, Stack *sout);
-
-/**
- * @brief: Merges both stacks and unites them in a third stack
- *
- * @param sin1 first input stack
- * @param sin2 second input stack
- * @param sout  result stack
- * @return The function returns OK or ERROR
- **/
-Status mergeStacksb(Stack *sin1, Stack *sin2, Stack *sout, P_stack_ele_cmp f);
-
-/**
  * @brief  This function writes the elements of the stack to the stream.
  * @param fp A pointer to the stream
  * @param s A pointer to the element to the stack

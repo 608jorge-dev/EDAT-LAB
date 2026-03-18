@@ -4,7 +4,7 @@
 
 #include "stack.h"
 
-#define MAX_STACK 8
+#define MAX_STACK 20
 
 struct _Stack {
 void *data[MAX_STACK ];
@@ -15,7 +15,7 @@ Stack *stack_init() {
   Stack *sl = NULL;
   int i;
 
-  sl = (Stack *) malloc(sizeof(Stack));
+  sl = (Stack *) calloc(1,sizeof(Stack));
   if (sl == NULL) {
     return NULL;
   }
@@ -24,6 +24,7 @@ Stack *stack_init() {
     sl->data[i] = NULL;
   }
   sl->top = 0;
+
   return sl;
 }
 
@@ -32,19 +33,19 @@ void stack_free(Stack *s)   {
 }
 
 Status stack_push(Stack *s, const void *ele)    {
-  if ((s == NULL) || (ele == NULL) || (_stack_is_full(s) == TRUE)) {
+  if ((s == NULL) || (ele == NULL) || (s->top+1 == MAX_STACK)) {
     return ERROR;
   }
 
   s->top ++;
   s->data[s->top] = (void *)ele;
-
+ 
   return OK;
 }
 
 void *stack_pop(Stack *s)   {
   void *e = NULL;
-  if ((s == NULL) || (stack_is_empty(s) == TRUE)) {
+  if ((s == NULL) || (stack_isEmpty(s) == TRUE)) {
     return NULL;
   }
 
@@ -56,9 +57,9 @@ void *stack_pop(Stack *s)   {
 }
 
 void *stack_top(const Stack *s) {
-  if ((s == NULL) || (stack_is_empty(s) == TRUE)) {
+  if ((s == NULL) || (stack_isEmpty(s) == TRUE)) {
     return NULL;
- }
+  }
 
   return s->data[s->top];
 }
@@ -67,7 +68,7 @@ Bool stack_isEmpty(const Stack *s)  {
   if (s == NULL) {
     return TRUE;
   }
-  if (s ->top == -1) {
+  if (s ->top == 0) {
     return TRUE;
  }
 
@@ -75,156 +76,40 @@ Bool stack_isEmpty(const Stack *s)  {
 }
 
 size_t stack_size(const Stack *s)   {
-  if ((s == NULL) || (stack_is_empty(s) == TRUE)) {
+  if ((s == NULL) || (stack_isEmpty(s) == TRUE)) {
     return 0;
   }
 
   return s->top;
 }
 
-/**
- * @brief: Merges both stacks and unites them in a third stack
- *
- * @param sin1 first input stack
- * @param sin2 second input stack
- * @param sout  result stack
- * @return The function returns OK or ERROR
- **/
-Status mergeStacksa(Stack *sin1, Stack *sin2, Stack *sout)
-{
-    void *e = NULL;
-    Stack *ps = NULL;
-
-    if (!sin1 || !sin2 || !sout)
-    {
-        return ERROR;
-    }
-
-    while (stack_isEmpty(sin1) == FALSE && stack_isEmpty(sin2) == FALSE)
-    {
-        if (stack_top(sin1) > stack_top(sin2))
-        {
-            if (!(e = stack_pop(sin1)))
-            {
-                return ERROR;
-            }
-        }
-        else
-        {
-            if (!(e = stack_pop(sin2)))
-            {
-                return ERROR;
-            }
-        }
-
-        if (stack_push(sout, e) == ERROR)
-        {
-            return ERROR;
-        }
-    }
-
-    if (stack_isEmpty(sin1) == TRUE)
-    {
-        ps = sin2;
-    }
-    else
-    {
-        ps = sin1;
-    }
-
-    while (stack_isEmpty(ps) == FALSE)
-    {
-        if (!(e = stack_pop(ps)))
-        {
-            return ERROR;
-        }
-
-        if (stack_push(sout, e) == ERROR)
-        {
-            return ERROR;
-        }
-    }
-
-    return OK;
-}
-
-/* Merges both stacks and unites them in a third stack*/
-Status mergeStacksb(Stack *sin1, Stack *sin2, Stack *sout, P_stack_ele_cmp f)
-{
-    void *e = NULL;
-    Stack *ps = NULL;
-
-    if (!sin1 || !sin2 || !sout)
-    {
-        return ERROR;
-    }
-
-    while (stack_isEmpty(sin1) == FALSE && stack_isEmpty(sin2) == FALSE)
-    {
-        if (f(stack_top(sin1), stack_top(sin2)) == 0)
-        {
-            if (!(e = stack_pop(sin1)))
-            {
-                return ERROR;
-            }
-        }
-        else if (f(stack_top(sin1), stack_top(sin2)) == 1)
-        {
-            if (!(e = stack_pop(sin1)))
-            {
-                return ERROR;
-            }
-        }
-        else if (f(stack_top(sin1), stack_top(sin2)) == -1)
-        {
-            if (!(e = stack_pop(sin2)))
-            {
-                return ERROR;
-            }
-        }
-
-        if (stack_push(sout, e) == ERROR)
-        {
-            return ERROR;
-        }
-    }
-
-    if (stack_isEmpty(sin1) == TRUE)
-    {
-        ps = sin2;
-    }
-    else
-    {
-        ps = sin1;
-    }
-
-    while (stack_isEmpty(ps) == FALSE)
-    {
-        if (!(e = stack_pop(ps)))
-        {
-            return ERROR;
-        }
-
-        if (stack_push(sout, e) == ERROR)
-        {
-            return ERROR;
-        }
-    }
-
-    return OK;
-}
-
 int stack_print(FILE *fp, const Stack *s, P_stack_ele_print f)  {
-  int i;  
+  int i,sz;
+  void *e=NULL, *w=NULL;
+  Stack *temp=NULL;
   if (!fp || !s || !f)  {
     return 0;
   }
 
-  fprintf (fp, "Stack:");   
-  while (s->top != 0)  {
-    if (!f(fp, stack_pop(s)))   {
-        return -1;
-    }
+  temp = stack_init();
+  if (!temp)  {
+    return -1;
   }
+  fprintf (fp, "Stack:\n");   
+  fprintf (fp, "\tNumber of elements: %ld\n", stack_size(s)); 
+  sz=stack_size(s);
+  for (i=0; i<sz; i++){
+    fprintf(fp, "\n");
+    e=stack_pop((void*)s);
+    f(fp, e);
+    stack_push(temp, e);
+  }
+
+  while (stack_isEmpty(temp)!= TRUE)  {
+    w=(void*)stack_pop(temp);
+    stack_push((void*)s,w);
+  }
+  stack_free(temp);
+  return 0;
 }
 
