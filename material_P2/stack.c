@@ -152,9 +152,8 @@ int stack_print(FILE *fp, const Stack *s, P_stack_ele_print f)  {
   if (!temp)  {
     return ERROR_PRINT;
   }
-  sz=stack_size(s);
-  fprintf (fp, "Stack:\n");   
-  fprintf (fp, "\tNumber of elements: %d\n", sz); 
+  sz=stack_size(s); 
+  fprintf (fp, "SIZE: %d", sz); 
 
   while (stack_isEmpty(s) != TRUE){
     fprintf(fp, "\n");
