@@ -80,6 +80,13 @@ void *stack_top(const Stack *s);
 Bool stack_isEmpty(const Stack *s);
 
 /**
+ * @brief Returns whether the stack is full
+ * @param s A pointer to the stack.
+ * @return TRUE or FALSE
+ */
+Bool stack_isFull(const Stack *s);
+
+/**
  * @brief This function returns the size of the stack.
  *
  * Time complexity: O(1).
