@@ -5,6 +5,17 @@
 #include "music.h"
 #include "radio.h"
 
+/**
+ * @brief: Compares both music depending on the artist
+ *
+ * @param m1,m2 Music to compare.
+ * @return 0 if they are equal, -1 if m1 is greater than m2, 1 if m2 is greater than m1
+ **/
+int music_cmp_artist(const void *m1, const void *m2);
+
+/**
+ * @brief: Free both radios, both stacks and both files
+ **/
 void freeall(Radio *r1, Radio *r2, Stack *s1, Stack *s2, FILE *f1, FILE *f2);
 
 int main(int argc, char **argv)
@@ -144,7 +155,7 @@ int main(int argc, char **argv)
         stack_free(sl3);
         return -1;
     }
-    if (mergeStacksa(sl1, sl2, sl3) == ERROR)
+    if (mergeStacks(sl1, sl2, sl3, music_cmp_artist) == ERROR)
     {
         fprintf(stderr, "Error while merging stacks.\n");
         freeall(r1, r2, sl1, sl2, fIn1, fIn2);
@@ -165,7 +176,37 @@ int main(int argc, char **argv)
     stack_free(sl3);
 }
 
-/* Free both radios, both stacks and both files*/
+int music_cmp_artist(const void *m1, const void *m2)
+{
+    Music *one = NULL, *two = NULL;
+    if (!m1 || !m2)
+    {
+        return ERROR_CMP;
+    }
+    one = (Music *)m1;
+    two = (Music *)m2;
+
+    if (!one || !two)
+    {
+        return ERROR_CMP;
+    }
+
+    if (strcmp(music_getArtist(m1), music_getArtist(m2)) == 0)
+    {
+        return 0;
+    }
+    else if (strcmp(music_getArtist(m1), music_getArtist(m2)) > 0)
+    {
+        return 1;
+    }
+
+    else
+    {
+        return -1;
+    }
+}
+
+/*Free both radios, both stacks and both files*/
 void freeall(Radio *r1, Radio *r2, Stack *s1, Stack *s2, FILE *f1, FILE *f2)
 {
     radio_free(r1);

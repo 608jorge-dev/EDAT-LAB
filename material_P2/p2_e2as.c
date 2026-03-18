@@ -144,7 +144,7 @@ int main(int argc, char **argv)
         stack_free(sl3);
         return -1;
     }
-    if (mergeStacksa(sl1, sl2, sl3) == ERROR)
+    if (mergeStacks(sl1, sl2, sl3) == ERROR)
     {
         fprintf(stderr, "Error while merging stacks.\n");
         freeall(r1, r2, sl1, sl2, fIn1, fIn2);
