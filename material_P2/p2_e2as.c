@@ -170,6 +170,8 @@ int main(int argc, char **argv)
         return -1;
     }
 
+    fprintf(stderr, "\n");
+
     // free radios, files and stacks
     freeall(r1, r2, sl1, sl2, fIn1, fIn2);
     stack_free(sl3);
