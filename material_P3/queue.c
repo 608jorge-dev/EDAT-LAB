@@ -78,7 +78,7 @@ Status queue_push(Queue *q, void *ele)
 void *queue_pop(Queue *q)
 {
   void *ele = NULL;
-  if (!q)
+  if (!q || queue_isEmpty(q) == TRUE )
   {
     return FALSE;
   }
