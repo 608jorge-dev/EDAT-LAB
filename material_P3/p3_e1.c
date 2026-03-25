@@ -21,7 +21,7 @@ int now_playing_menu(Queue *q)
     {
         printf("\nNo song currently playing.\n");
     }
-
+    
     /* Imprimimos historial (cola) */
     printf("\nUncoming:\n");
     queue_print(stdout, q, music_plain_print);

@@ -64,7 +64,7 @@ Bool queue_isFull(const Queue *pq)
 
 Status queue_push(Queue *q, void *ele)
 {
-  if (!q || !ele /*|| queue_isFull(q) == TRUE*/)
+  if (!q || !ele || queue_isFull(q) == TRUE)
   {
     return FALSE;
   }
@@ -83,6 +83,7 @@ void *queue_pop(Queue *q)
     return FALSE;
   }
 
+  
   ele = *(q->front);
   *(q->front) = NULL;
   q->front = q->data + (q->front + 1 - q->data) % MAX_QUEUE;
@@ -137,8 +138,7 @@ size_t queue_size(const Queue *q)
 
 int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
 {
-  Queue *temp = NULL;
-  int i, sz;
+  int i, sz, initial, current;
 
   if (!fp || !q || !f)
   {
@@ -152,15 +152,17 @@ int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
     return ERROR_PRINT;
   }
 
+  initial = q->front - (void **)q->data;
+  
   for (i = 0; i < sz; i++)
   {
+    current = (initial + i) % MAX_QUEUE;
     fprintf(fp, "\n");
-    if (f(fp, q->data[i]) == 0)
+    if (f(fp, q->data[current]) == 0)
     {
       return ERROR_PRINT;
     }
   }
 
-  queue_free(temp);
   return 0;
 }
