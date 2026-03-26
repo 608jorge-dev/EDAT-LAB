@@ -66,7 +66,7 @@ Bool queue_isFull(const Queue *pq)
   {
     return TRUE;
   }
-  if ((pq->rear + 1 - pq->front) % MAX_QUEUE == 0)
+  if ((pq->rear + 1 - pq->data) % MAX_QUEUE == (pq->front - pq->data))
   {
     return TRUE;
   }
@@ -75,7 +75,7 @@ Bool queue_isFull(const Queue *pq)
 
 Status queue_push(Queue *q, void *ele)
 {
-  if (!q || !ele /*|| queue_isFull(q) == TRUE*/)
+  if (!q || !ele || queue_isFull(q) == TRUE)
   {
     return FALSE;
   }
