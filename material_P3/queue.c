@@ -1,3 +1,14 @@
+/**
+ * @file  queue.c
+ * @author Jorge Torrijos de la Cruz e Ivan Reyero Fernández
+ * @date March 2026
+ * @mersion 1.0
+ * @brief Library to manage queue
+ *
+ * @details 
+ * 
+ * @see
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -64,7 +75,7 @@ Bool queue_isFull(const Queue *pq)
 
 Status queue_push(Queue *q, void *ele)
 {
-  if (!q || !ele || queue_isFull(q) == TRUE)
+  if (!q || !ele /*|| queue_isFull(q) == TRUE*/)
   {
     return FALSE;
   }
@@ -125,7 +136,7 @@ size_t queue_size(const Queue *q)
     return 0;
   }
 
-  if (queue_isEmpty(q) == TRUE)     {
+  if (queue_isEmpty(q) == TRUE)  {
     return 0;
   }
 
@@ -146,7 +157,7 @@ int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
   }
 
   sz = queue_size(q);
-  fprintf(stdout, "%d", sz);
+  fprintf (stdout, "%d\n", sz);
   if (sz == 0)
   {
     return ERROR_PRINT;
@@ -157,11 +168,12 @@ int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
   for (i = 0; i < sz; i++)
   {
     current = (initial + i) % MAX_QUEUE;
-    fprintf(fp, "\n");
+   
     if (f(fp, q->data[current]) == 0)
     {
       return ERROR_PRINT;
     }
+    fprintf(fp, "\n");
   }
 
   return 0;

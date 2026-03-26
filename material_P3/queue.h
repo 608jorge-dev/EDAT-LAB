@@ -1,6 +1,9 @@
-/** 
- * Queue implementation with (void *)
- **/
+/**
+ * @file queue.h
+ * @author Jorge Torrijos de la Cruz e Ivan Reyero Fernández
+ * @date March 2026
+ * @brief Public interface for queue implementation.
+ */
 
 #ifndef QUEUE_H
 #define	QUEUE_H
