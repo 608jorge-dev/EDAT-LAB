@@ -32,6 +32,17 @@ Status radio_depthSearch (Radio *r, long from_id, long to_id);
 **/
 Status radio_breadthSearch (Radio *r, long from_id, long to_id);
 
+/** 
+Preguntas: 
+1. ¿Cuál es la principal diferencia de comportamiento entre DFS y BFS?
+  DFS: explora un camino hasta el fondo antes de retroceder.
+  BFS: explora por niveles, visitando primero los más cercanos.
+
+2. ¿En qué tipos de problemas crees que funcionaría mejor un algoritmo frente al otro? Indica, al menos, 2 ejemplos por cada uno. 
+  DFS: Laberintos, Backtracking
+  BFS: Google Maps, Redes Sociales
+**/
+
 int main(int argc, char **argv)
 {
     Radio *r1 = NULL;
