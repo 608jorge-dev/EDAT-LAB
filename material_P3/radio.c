@@ -1,3 +1,14 @@
+/**
+ * @file  radio.c
+ * @author Jorge Torrijos de la Cruz e Ivan Reyero Fernández
+ * @date March 2026
+ * @mersion 1.0
+ * @brief Library to manage radio
+ *
+ * @details 
+ * 
+ * @see
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

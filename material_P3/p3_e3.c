@@ -96,7 +96,7 @@ int main(int argc, char **argv)
     /*Revoming radio music to list*/
     half = num / 2;
 
-    printf("\nFinished inserting. Now we extract from the begginning:\n");
+    fprintf(stdout, "\nFinished inserting. Now we extract from the beginning:\n");
     for (i = 0; i < half; i++)
     {
         m = list_popFront(ls);
@@ -110,9 +110,10 @@ int main(int argc, char **argv)
         }
 
         music_plain_print(stdout, m);
+        fprintf(stdout, "\n");
     }
 
-    printf("\nNow we extract from the end:\n");
+    fprintf(stdout, "\n\nNow we extract from the end:\n");
     while (list_isEmpty(ls) == FALSE)
     {
         m = list_popBack(ls);
@@ -126,6 +127,7 @@ int main(int argc, char **argv)
         }
 
         music_plain_print(stdout, m);
+        fprintf(stdout, "\n");
     }
 
     /*free r1, file and list*/
