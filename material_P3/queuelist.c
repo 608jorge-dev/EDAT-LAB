@@ -63,10 +63,10 @@ Bool queue_isEmpty(const Queue *q)
 {
     if (!q)
     {
-        return NULL;
+        return FALSE;
     }
 
-    return list_is_empty(q->pl);
+    return list_isEmpty(q->pl);
 }
 
 void *queue_pop(Queue *q)
@@ -76,7 +76,7 @@ void *queue_pop(Queue *q)
         return NULL;
     }
 
-    return list_pop_front(q->pl);
+    return list_popFront(q->pl);
 }
 
 Status queue_push(Queue *q, void *ele)
@@ -86,7 +86,7 @@ Status queue_push(Queue *q, void *ele)
         return ERROR;
     }
 
-    return list_push_back(q->pl, ele);
+    return list_pushBack(q->pl, ele);
 }
 
 void *queue_getFront(const Queue *q)    {
