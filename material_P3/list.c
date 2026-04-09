@@ -102,7 +102,7 @@ Bool list_isEmpty(const List *pl)
   {
     return TRUE;
   }
-
+  
   return FALSE;
 }
 
@@ -147,6 +147,7 @@ Status list_pushBack(List *pl, const void *e)
   {
     pl->first = n;
     pl->last = n;
+    list_set_size(pl, list_size(pl) + 1);
     return OK;
   }
 
@@ -190,6 +191,7 @@ void *list_popBack(List *pl)
     e = pl->first->info;
     free((void *)pl->first);
     pl->first = NULL;
+    list_set_size(pl, list_size(pl) - 1);
     return e;
   }
 
@@ -199,6 +201,7 @@ void *list_popBack(List *pl)
     pn = pn->next;
   }
   e = pn->next->info;
+  list_set_size(pl, list_size(pl) - 1);
   free((void *)pn->next);
   pn->next = NULL;
   return e;
@@ -206,22 +209,22 @@ void *list_popBack(List *pl)
 
 void *list_getFront(List *pl)
 {
-  if (!pl)
+  if (!pl || (list_isEmpty(pl) == TRUE))
   {
     return NULL;
   }
 
-  return pl->first;
+  return pl->first->info;
 }
 
 void *list_getBack(List *pl)
 {
-  if (!pl)
+  if (!pl || (list_isEmpty(pl) == TRUE))
   {
     return NULL;
   }
 
-  return pl->last;
+  return pl->last->info;
 }
 
 int list_size(const List *pl)
@@ -236,7 +239,7 @@ int list_size(const List *pl)
 
 int list_print(FILE *fp, const List *pl, p_list_ele_print f)
 {
-  int sz;
+  int sz, c, counter;
   Node *e = NULL;
 
   if (!fp || !pl || !f)
@@ -245,7 +248,6 @@ int list_print(FILE *fp, const List *pl, p_list_ele_print f)
   }
 
   sz = list_size(pl);
-  fprintf(stdout, "%d\n", sz);
   if (sz == 0)
   {
     return ERROR_PRINT;
@@ -255,15 +257,15 @@ int list_print(FILE *fp, const List *pl, p_list_ele_print f)
 
   while (e != NULL)
   {
-
-    if (f(fp, e->info) == 0)
+    counter = f(fp, e->info);
+    if (counter == 0)
     {
       return ERROR_PRINT;
     }
     fprintf(fp, "\n");
-
+    c += counter;
     e = e->next;
   }
 
-  return 0;
+  return c;
 }

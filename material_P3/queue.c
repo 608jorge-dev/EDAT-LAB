@@ -49,7 +49,7 @@ Bool queue_isEmpty(const Queue *q)
 {
   if (!q)
   {
-    return FALSE;
+    return TRUE;
   }
 
   if (q->front == q->rear)
@@ -64,7 +64,7 @@ Bool queue_isFull(const Queue *pq)
 {
   if (pq == NULL)
   {
-    return TRUE;
+    return FALSE;
   }
   if ((pq->rear + 1 - pq->data) % MAX_QUEUE == (pq->front - pq->data))
   {
@@ -77,7 +77,7 @@ Status queue_push(Queue *q, void *ele)
 {
   if (!q || !ele || queue_isFull(q) == TRUE)
   {
-    return FALSE;
+    return ERROR;
   }
 
   *(q->rear) = (void *)ele;
@@ -149,7 +149,7 @@ size_t queue_size(const Queue *q)
 
 int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
 {
-  int i, sz, initial, current;
+  int i, sz, initial, current, counter, c;
 
   if (!fp || !q || !f)
   {
@@ -157,7 +157,6 @@ int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
   }
 
   sz = queue_size(q);
-  fprintf (stdout, "%d\n", sz);
   if (sz == 0)
   {
     return ERROR_PRINT;
@@ -169,12 +168,14 @@ int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
   {
     current = (initial + i) % MAX_QUEUE;
    
-    if (f(fp, q->data[current]) == 0)
+    counter = f(fp, q->data[current]);
+    if (counter == 0)
     {
       return ERROR_PRINT;
     }
+    c += counter;
     fprintf(fp, "\n");
   }
 
-  return 0;
+  return c;
 }

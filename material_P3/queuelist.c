@@ -26,6 +26,10 @@ Bool queue_isFull(const Queue *q)
 {
     if (q == NULL)
     {
+        return FALSE;
+    }
+
+    if (queue_size(q) == MAX_QUEUE)    {
         return TRUE;
     }
     return FALSE;
@@ -81,7 +85,7 @@ void *queue_pop(Queue *q)
 
 Status queue_push(Queue *q, void *ele)
 {
-    if (!q || !ele)
+    if (!q || !ele || queue_isFull(q) == TRUE)
     {
         return ERROR;
     }

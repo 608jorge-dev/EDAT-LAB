@@ -1,7 +1,8 @@
 ########################################################
 CC=gcc
 CFLAGS= -g -Wall -pedantic -std=c90
-EJS = p3_e1 p3_e2 p3_e3 p3_e1s p3_e2s
+LIBS = -lstack -L.
+EJS = p3_e1 p3_e2 p3_e3 p3_e1s p3_e2s test_queue test_list test_queues
 ########################################################
 OBJECTSP3E1 = p3_e1.o radio.o music.o queue.o
 OBJECTSP3E2 = p3_e2.o radio.o music.o queue.o
@@ -10,22 +11,33 @@ OBJECTSP3E1S = p3_e1.o radio.o music.o queuelist.o list.o
 OBJECTSP3E2S = p3_e2.o radio.o music.o queuelist.o list.o
 ########################################################
 
-all: $(EJS) clear
+all: $(EJS)
+
+.PHONY: all clean clear run run_test runv queue_test test_list
 
 p3_e1: $(OBJECTSP3E1)
-	$(CC) $(CFLAGS) -o p3_e1 $(OBJECTSP3E1) -lstack -L.
+	$(CC) $(CFLAGS) -o p3_e1 $(OBJECTSP3E1) $(LIBS)
 
 p3_e2: $(OBJECTSP3E2)
-	$(CC) $(CFLAGS) -o p3_e2 $(OBJECTSP3E2) -lstack -L.
+	$(CC) $(CFLAGS) -o p3_e2 $(OBJECTSP3E2) $(LIBS)
 
 p3_e3: $(OBJECTSP3E3)
-	$(CC) $(CFLAGS) -o p3_e3 $(OBJECTSP3E3) -lstack -L.
+	$(CC) $(CFLAGS) -o p3_e3 $(OBJECTSP3E3) $(LIBS)
 
 p3_e1s: $(OBJECTSP3E1S)
-	$(CC) $(CFLAGS) -o p3_e1s $(OBJECTSP3E1S) -lstack -L.
+	$(CC) $(CFLAGS) -o p3_e1s $(OBJECTSP3E1S) $(LIBS)
 
 p3_e2s: $(OBJECTSP3E2S)
-	$(CC) $(CFLAGS) -o p3_e2s $(OBJECTSP3E2S) -lstack -L.
+	$(CC) $(CFLAGS) -o p3_e2s $(OBJECTSP3E2S) $(LIBS)
+
+test_queue: test_queue.o queue.o
+	$(CC) $(CFLAGS) -o test_queue test_queue.o queue.o $(LIBS)
+
+test_queues: test_queue.o queuelist.o 
+	$(CC) $(CFLAGS) -o test_queues test_queue.o queuelist.o list.o $(LIBS)
+
+test_list: test_list.o list.o
+	$(CC) $(CFLAGS) -o test_list test_list.o list.o $(LIBS)
 
 ########################################################
 
@@ -53,6 +65,12 @@ radio.o: radio.c radio.h music.h
 queue.o: queue.c queue.h music.h
 	$(CC) $(CFLAGS) -c queue.c
 
+test_queue.o: test_queue.c queue.h
+	$(CC) -c test_queue.c
+
+test_list.o: test_list.c list.h
+	$(CC) -c test_list.c
+
 list.o: list.c list.h music.h
 	$(CC) $(CFLAGS) -c list.c
 
@@ -65,8 +83,7 @@ clear:
 	rm -rf *.o 
 
 clean:
-	rm -rf *.o $(EJS)
-
+	rm -rf *.o $(EJS) 
 
 run:
 	@echo ">>>>>>Running p3_e1"
@@ -80,6 +97,14 @@ run:
 	@echo ">>>>>>Running p3_e2s"
 	./p3_e2s radio_bfs.txt 1 2
 
+run_test:
+	@echo ">>>>>>Running test_queue"
+	./test_queue
+	@echo ">>>>>>Running test_list"
+	./test_list
+	@echo ">>>>>>Running test_queues"
+	./test_queues
+	
 runv:
 	
 	@echo ">>>>>>Running p3_e1 with valgrind"
