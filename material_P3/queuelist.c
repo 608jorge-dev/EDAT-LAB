@@ -29,7 +29,7 @@ Bool queue_isFull(const Queue *q)
         return FALSE;
     }
 
-    if (queue_size(q) == MAX_QUEUE)    {
+    if (queue_size(q) >= MAX_QUEUE - 1)    {
         return TRUE;
     }
     return FALSE;
@@ -67,7 +67,7 @@ Bool queue_isEmpty(const Queue *q)
 {
     if (!q)
     {
-        return FALSE;
+        return TRUE;
     }
 
     return list_isEmpty(q->pl);
