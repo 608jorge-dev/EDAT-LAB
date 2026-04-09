@@ -15,7 +15,7 @@
 #define TYPES_H_
 
 #define MAX_MSC 4096
-#define MAX_QUEUE 8
+#define MAX_QUEUE 10
 #define NO_MUSICPOSITION -1
 #define NO_NUMMUSIC -1
 #define NO_RELATIONS -1
