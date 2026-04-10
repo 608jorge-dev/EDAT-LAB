@@ -99,11 +99,11 @@ run:
 
 run_test:
 	@echo ">>>>>>Running test_queue"
-	./test_queue
+	valgrind --leak-check=full ./test_queue
 	@echo ">>>>>>Running test_list"
-	./test_list
+	valgrind --leak-check=full ./test_list
 	@echo ">>>>>>Running test_queues"
-	./test_queues
+	valgrind --leak-check=full ./test_queues
 	
 runv:
 	

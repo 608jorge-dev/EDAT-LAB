@@ -149,7 +149,7 @@ size_t queue_size(const Queue *q)
 
 int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
 {
-  int i, sz, initial, current, counter, c;
+  int i, sz, initial, current, counter, c = 0;
 
   if (!fp || !q || !f)
   {
