@@ -29,7 +29,8 @@ Bool queue_isFull(const Queue *q)
         return FALSE;
     }
 
-    if (queue_size(q) >= MAX_QUEUE - 1)    {
+    if (queue_size(q) >= MAX_QUEUE - 1)
+    {
         return TRUE;
     }
     return FALSE;
@@ -93,38 +94,47 @@ Status queue_push(Queue *q, void *ele)
     return list_pushBack(q->pl, ele);
 }
 
-void *queue_getFront(const Queue *q)    {
-    if (!q) {
+void *queue_getFront(const Queue *q)
+{
+    if (!q)
+    {
         return 0;
     }
 
     return list_getFront(q->pl);
 }
 
-void *queue_getBack(const Queue *q) {
-    if (!q) {
+void *queue_getBack(const Queue *q)
+{
+    if (!q)
+    {
         return 0;
     }
 
     return list_getBack(q->pl);
 }
 
-size_t queue_size(const Queue *q)   {
-    if (!q) {
+size_t queue_size(const Queue *q)
+{
+    if (!q)
+    {
         return 0;
     }
 
-    if (queue_isEmpty(q) == TRUE)  {
+    if (queue_isEmpty(q) == TRUE)
+    {
         return 0;
     }
 
     return list_size(q->pl);
 }
 
-int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)  {
-    if (!q) {
+int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
+{
+    if (!q || !fp || !f)
+    {
         return 0;
-    } 
+    }
 
     return list_print(fp, q->pl, f);
 }

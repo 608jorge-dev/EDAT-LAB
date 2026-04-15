@@ -21,7 +21,7 @@ int now_playing_menu(Queue *q)
     {
         printf("\nNo song currently playing.\n");
     }
-    
+
     /* Imprimimos historial (cola) */
     printf("\nUncoming:\n");
     queue_print(stdout, q, music_plain_print);
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     FILE *fIn = fopen(argv[1], "r");
     Music *m = NULL;
     Queue *qu = NULL;
-    int i, option;
+    int i, option = 0;
 
     if (argc < 2)
     {
@@ -99,7 +99,6 @@ int main(int argc, char **argv)
     do
     {
         option = now_playing_menu(qu);
-
         if (option == 1)
         {
             queue_pop(qu);

@@ -169,7 +169,7 @@ int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f)
     current = (initial + i) % MAX_QUEUE;
    
     counter = f(fp, q->data[current]);
-    if (counter == 0)
+    if (counter < 1)
     {
       return ERROR_PRINT;
     }

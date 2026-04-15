@@ -2,7 +2,7 @@
  * @file  list.c
  * @author Jorge Torrijos de la Cruz e Ivan Reyero Fernández
  * @date Marcg 2026
- * @mersion 1.0
+ * @version 1.0
  * @brief Library to manage list
  *
  * @details

@@ -80,9 +80,6 @@ queuelist.o: queuelist.c
 ########################################################
 
 clear:
-	rm -rf *.o 
-
-clean:
 	rm -rf *.o $(EJS) 
 
 run:

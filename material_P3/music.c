@@ -2,7 +2,7 @@
  * @file  music.c
  * @author Profesores EDAT
  * @date February 2026
- * @mersion 1.0
+ * @version 1.0
  * @brief Library to manage ADT Music
  *
  * @details 
@@ -33,12 +33,20 @@ Status music_setField (Music *m, char *key, char *value) {
   if (!key || !value) return ERROR;
 
   if (strcmp(key, "id") == 0) {
+    if (atol(value) < 0)
+    {
+      return ERROR;
+    }
     return music_setId(m, atol(value));
   } else if (strcmp(key, "title") == 0) {
     return music_setTitle(m, value);
   } else if (strcmp(key, "artist") == 0) {
     return music_setArtist(m, value);
   } else if (strcmp(key, "duration") == 0) {
+    if (atol(value) < 0)
+    {
+      return ERROR;
+    }
     return music_setDuration(m, atol(value));
   } else if (strcmp(key, "state") == 0) {
     return music_setState(m, (State)atoi(value));

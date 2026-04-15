@@ -22,9 +22,9 @@
  *
  **/
 typedef enum {
-    NOT_LISTENED, /*!< Music not visited */
-    LISTENED,  /*!< Music visited */
-    ERROR_MUSIC   /*!< not valid Music */   
+    NOT_LISTENED,  /*!< Music not visited */
+    LISTENED,      /*!< Music visited */
+    ERROR_MUSIC    /*!< not valid Music */   
 } State;
 
 /** 
