@@ -22,6 +22,9 @@ struct _BSTree {
 /*** BSTNode TAD private functions ***/
 void _tree_rangeSearch_rec(BSTNode *node, void *min, void *max, List *list, P_ele_cmp cmp);
 int _tree_countLongSongs_rec(BSTNode *node, int min_duration);
+
+
+
 BSTNode *_bst_node_new() {
   BSTNode *pn = NULL;
 
@@ -129,6 +132,42 @@ int _bst_postOrder_rec(BSTNode *pn, FILE *pf, P_ele_print print_ele) {
   return count;
 }
 
+void *_bst_find_min_rec(BSTNode *node) {
+  if (!node) return NULL;
+
+  if (!node->left) {
+    return node->info;
+  }
+
+  return _bst_find_min_rec(node->left);
+}
+
+void *_bst_find_max_rec(BSTNode *node) {
+  if (!node) return NULL;
+
+  if (!node->right) {
+    return node->info;
+  }
+
+  return _bst_find_max_rec(node->right);
+}
+
+Bool _bst_contains_rec(BSTNode *node, const void *elem, P_ele_cmp cmp) {
+  int comp;
+
+  if (!node) return FALSE;
+
+  comp = cmp(elem, node->info);
+
+  if (comp == 0) {
+    return TRUE;
+  } else if (comp < 0) {
+    return _bst_contains_rec(node->left, elem, cmp);
+  } else {
+    return _bst_contains_rec(node->right, elem, cmp);
+  }
+}
+
 /*** BSTree TAD functions ***/
 BSTree *tree_init(P_ele_print print_ele, P_ele_cmp cmp_ele) {
   BSTree *tree;
@@ -207,4 +246,20 @@ int tree_postOrder(FILE *f, const BSTree *tree) {
   return _bst_postOrder_rec(tree->root, f, tree->print_ele) + fprintf(f, "\n");
 }
 
-/**** TODO: find_min, find_max, insert, contains, remove ****/
+void *tree_find_min(BSTree *tree) {
+  if (!tree || !tree->root) return NULL;
+
+  return _bst_find_min_rec(tree->root);
+}
+
+void *tree_find_max(BSTree *tree) {
+  if (!tree || !tree->root) return NULL;
+
+  return _bst_find_max_rec(tree->root);
+}
+
+Bool tree_contains(BSTree *tree, const void *elem) {
+  if (!tree || !elem) return FALSE;
+
+  return _bst_contains_rec(tree->root, elem, tree->cmp_ele);
+}

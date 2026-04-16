@@ -48,8 +48,13 @@ typedef enum
 } Status;
 
 /**
- * @brief Typedef for a function pointer to compare a stack element at stream
- **/
-typedef int (*P_stack_ele_cmp)(const void *, const void *);
+ * @brief Typedef for a function pointer to compare elements
+ */
+typedef int (*P_ele_cmp)(const void *, const void *);
+
+/**
+ * @brief Typedef for a function pointer to print elements
+ */
+typedef int (*P_ele_print)(FILE *, const void *);
 
 #endif /* TYPES_H_ */
