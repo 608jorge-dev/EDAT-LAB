@@ -13,7 +13,7 @@ all: $(EJS)
 .PHONY: all clean clear run
 
 p4_e1: $(OBJECTSP4E1)
-	$(CC) $(CFLAGS) -o p4_e1 $(OBJECTSP4E1) $(LIBS)
+	$(CC) $(CFLAGS) -o p4_e1 $(OBJECTSP4E1)
 
 
 
@@ -21,8 +21,6 @@ p4_e1: $(OBJECTSP4E1)
 
 p4_e1.o: p4_e1.c music.h radio.h bstree.h
 	$(CC) $(CFLAGS) -c p4_e1.c
-
-
 
 music.o: music.c music.h 
 	$(CC) $(CFLAGS) -c music.c
@@ -45,10 +43,11 @@ clear:
 run:
 	@echo ">>>>>>Running p4_e1"
 	./p4_e1 data_music_10 8 normal
-
+	./p4_e1 data_music_10 8 sorted
 
 	
 runv:
 	
 	@echo ">>>>>>Running p4_e1 with valgrind"
 	valgrind --leak-check=full ./p4_e1 data_music_10 8 normal
+	valgrind --leak-check=full ./p4_e1 data_music_10 8 sorted

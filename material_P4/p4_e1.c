@@ -113,7 +113,7 @@ int main(int argc, char const *argv[]) {
     r = radio_init();
     if (!r) mainCleanUp (EXIT_FAILURE, r, f_in);
     
-    // lee el fichero
+    /* lee el fichero*/
     if  (radio_readFromFile(f_in, r) == ERROR) {
       fprintf(stdout, "Not file or File format incorrect\n");
       mainCleanUp (EXIT_FAILURE, r, f_in);
@@ -124,7 +124,7 @@ int main(int argc, char const *argv[]) {
 	songs = radio_getSongs(r);
 	n = radio_getNumberOfMusic(r);
 	
-	index = _radio_findmusicById(r, music_id);
+	index = radio_musicPosition(r, music_id);
 	m = songs[index];
 	if (m == NULL) {
 		printf("Error when initialising music with id: %ld\n", music_id);
@@ -187,4 +187,9 @@ int main(int argc, char const *argv[]) {
   
   tree_destroy(t);
   mainCleanUp (EXIT_SUCCESS, r, f_in);
+
+  return 1;
 }
+
+
+/* P1 ¿Por qué es así?, ¿hay alguna propiedad del árbol que permita explicar este comportamiento?*/

@@ -242,7 +242,7 @@ int radio_musicPosition(const Radio *r, long id)
 
 int radio_print(FILE *pf, const Radio *r)
 {
-  int i, j, pos;
+  int i, j, pos, counter=0;
   long *ar = NULL;
   if (!pf || !r)
   {
@@ -252,7 +252,7 @@ int radio_print(FILE *pf, const Radio *r)
   for (i = 0; i < (radio_getNumberOfMusic(r)); i++)
   {
     /*printing music with i position in the array*/
-    music_plain_print(pf, (r->songs[i]));
+    counter += music_plain_print(pf, (r->songs[i]));
     fprintf(pf, ":");
 
     /*printing recommendations*/
@@ -265,14 +265,14 @@ int radio_print(FILE *pf, const Radio *r)
     for (j = 0; j < radio_getNumberOfRelationsFromId(r, music_getId(r->songs[i])); j++)
     {
       pos = radio_musicPosition(r, ar[j]);
-      music_plain_print(pf, r->songs[pos]);
+      counter += music_plain_print(pf, r->songs[pos]);
     }
 
     fprintf(pf, "\n");
     free(ar);
-
-    return OK;
   }
+
+  return counter;
 }
 
 Status radio_readFromFile(FILE *fin, Radio *r)
@@ -339,3 +339,14 @@ Music *radio_getMusic(Radio *r, int position)
 
   return r->songs[position];
 }
+
+Music **radio_getSongs(Radio *r)
+{
+  if (!r)
+  {
+    return NULL;
+  }
+
+  return r->songs;
+}
+

@@ -1,4 +1,5 @@
-
+#include <stdio.h>
+#include <stdlib.h>
 /**
  * @file types.h
  * @author Profesores EDAT
@@ -55,6 +56,6 @@ typedef int (*P_ele_cmp)(const void *, const void *);
 /**
  * @brief Typedef for a function pointer to print elements
  */
-typedef int (*P_ele_print)(FILE *, const void *);
+typedef int (*P_ele_print)(FILE*, const void *);
 
 #endif /* TYPES_H_ */

@@ -220,4 +220,13 @@ Status radio_readFromFile(FILE *fin, Radio *r);
  * @return A pointer to the selected music structure
  **/
 Music *radio_getMusic(Radio *r, int position);
+
+/**
+ * @brief Gets the  music array pointer
+ *
+ * @param r Pointer to the radio.
+ *
+ * @return A pointer to the music array
+ **/
+Music **radio_getSongs(Radio *r);
 #endif /* radio_H */
