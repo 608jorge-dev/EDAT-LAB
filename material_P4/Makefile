@@ -42,8 +42,8 @@ clear:
 
 run:
 	@echo ">>>>>>Running p4_e1"
-	./p4_e1 data_music_10 8 normal
-	./p4_e1 data_music_10 8 sorted
+	./p4_e1 data_music_10.txt 8 normal
+	./p4_e1 data_music_10.txt 8 sorted
 
 	
 runv:

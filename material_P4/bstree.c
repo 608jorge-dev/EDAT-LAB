@@ -321,20 +321,58 @@ Bool tree_contains(BSTree *tree, const void *elem)
 
 Status tree_insert(BSTree *tree, const void *elem)
 {
-  /*void *n = NULL;*/
-
+  BSTNode *w = NULL, *v = NULL, *u = NULL;
+  int cmp;
   if (!tree || !elem)
   {
     return ERROR;
   }
 
-  if (tree_contains(tree, elem) == TRUE)
+  /*Pongo la explicación de la función para no olvidarnos Botvan
+  Primero compara los nodos hasta encontrar el sitio, guardando siempre el nodo anterior*/
+  w = tree->root;
+  while (w != NULL)
   {
-    return OK;
+    v = w;
+    cmp = tree->cmp_ele(elem, w->info);
+    if (cmp == 0)
+    {
+      return OK;
+    }
+    else if (cmp > 0)
+    {
+      w = w->right;
+    }
+    else if (cmp < 0)
+    {
+      w = w->left;
+    }
   }
 
-  /*n = (void *)elem;
-  tree_find_max(tree) = n;*/
+  /*Segundo crea el nuevo nodo y lo apunta a la información en el argumento*/
+  u = _bst_node_new();
+  if (!u)
+  {
+    return ERROR;
+  }
+  u->info = (void *)elem;
+
+  /* Tercero chequea que  el nodo root existe y si existe conecta con el anterior usando la comparación anterior*/
+  if (!v)
+  {
+    tree->root = u;
+  }
+  else
+  {
+    if (cmp < 0)
+    {
+      v->left = u;
+    }
+    if (cmp > 0)
+    {
+      v->right = u;
+    }
+  }
 
   return OK;
 }
