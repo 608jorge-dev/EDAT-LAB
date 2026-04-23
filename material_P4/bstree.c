@@ -265,7 +265,7 @@ void *tree_find_min(BSTree *tree)
   {
     return NULL;
   }
-  return _bst_find_min_rec(tree->root->info);
+  return _bst_find_min_rec(tree->root);
 }
 
 BSTNode *_bst_find_max_rec(BSTNode *node)
@@ -287,7 +287,7 @@ void *tree_find_max(BSTree *tree)
   {
     return NULL;
   }
-  return _bst_find_max_rec(tree->root->info);
+  return _bst_find_max_rec(tree->root);
 }
 
 Bool _bst_contains_rec(BSTNode *node, const void *elem, P_ele_cmp cmp)
@@ -419,17 +419,12 @@ BSTNode *_bst_remove_rec(BSTNode *pn, const void *elem, P_ele_cmp cmp_elem)
 
 Status tree_remove(BSTree *tree, const void *elem)
 {
-  BSTNode *w = NULL;
   if (!tree || !elem)
   {
-    return FALSE;
+    return ERROR;
   }
 
-  w = _bst_remove_rec(tree->root, elem, tree->cmp_ele);
-  if (!w)
-  {
-    return FALSE;
-  }
+  tree->root = _bst_remove_rec(tree->root, elem, tree->cmp_ele);
 
-  return TRUE;
+  return OK;
 }
