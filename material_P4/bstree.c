@@ -151,55 +151,6 @@ int _bst_postOrder_rec(BSTNode *pn, FILE *pf, P_ele_print print_ele)
   return count;
 }
 
-void *_bst_find_min_rec(BSTNode *node)
-{
-  if (!node)
-    return NULL;
-
-  if (!node->left)
-  {
-    return node->info;
-  }
-
-  return _bst_find_min_rec(node->left);
-}
-
-void *_bst_find_max_rec(BSTNode *node)
-{
-  if (!node)
-    return NULL;
-
-  if (!node->right)
-  {
-    return node->info;
-  }
-
-  return _bst_find_max_rec(node->right);
-}
-
-Bool _bst_contains_rec(BSTNode *node, const void *elem, P_ele_cmp cmp)
-{
-  int comp;
-
-  if (!node)
-    return FALSE;
-
-  comp = cmp(elem, node->info);
-
-  if (comp == 0)
-  {
-    return TRUE;
-  }
-  else if (comp < 0)
-  {
-    return _bst_contains_rec(node->left, elem, cmp);
-  }
-  else
-  {
-    return _bst_contains_rec(node->right, elem, cmp);
-  }
-}
-
 /*** BSTree TAD functions ***/
 BSTree *tree_init(P_ele_print print_ele, P_ele_cmp cmp_ele)
 {
@@ -295,84 +246,190 @@ int tree_postOrder(FILE *f, const BSTree *tree)
   return _bst_postOrder_rec(tree->root, f, tree->print_ele) + fprintf(f, "\n");
 }
 
+BSTNode *_bst_find_min_rec(BSTNode *node)
+{
+  if (!node)
+    return NULL;
+
+  if (!node->left)
+  {
+    return node->info;
+  }
+
+  return _bst_find_min_rec(node->left);
+}
+
 void *tree_find_min(BSTree *tree)
 {
   if (!tree || !tree->root)
+  {
+    return NULL;
+  }
+  return _bst_find_min_rec(tree->root->info);
+}
+
+BSTNode *_bst_find_max_rec(BSTNode *node)
+{
+  if (!node)
     return NULL;
 
-  return _bst_find_min_rec(tree->root);
+  if (!node->right)
+  {
+    return node->info;
+  }
+
+  return _bst_find_max_rec(node->right);
 }
 
 void *tree_find_max(BSTree *tree)
 {
   if (!tree || !tree->root)
+  {
     return NULL;
+  }
+  return _bst_find_max_rec(tree->root->info);
+}
 
-  return _bst_find_max_rec(tree->root);
+Bool _bst_contains_rec(BSTNode *node, const void *elem, P_ele_cmp cmp)
+{
+  int comp;
+
+  if (!node || !elem || !cmp)
+  {
+    return FALSE;
+  }
+  comp = cmp(elem, node->info);
+
+  if (comp == 0)
+  {
+    return TRUE;
+  }
+  else if (comp < 0)
+  {
+    return _bst_contains_rec(node->left, elem, cmp);
+  }
+  else
+  {
+    return _bst_contains_rec(node->right, elem, cmp);
+  }
 }
 
 Bool tree_contains(BSTree *tree, const void *elem)
 {
   if (!tree || !elem)
+  {
     return FALSE;
-
+  }
   return _bst_contains_rec(tree->root, elem, tree->cmp_ele);
+}
+
+BSTNode *_bst_insert_rec(BSTNode *node, const void *elem, P_ele_cmp cmp)
+{
+  int comp;
+  if (!elem || !cmp)
+  {
+    return NULL;
+  }
+
+  if (!node)
+  {
+    node = _bst_node_new();
+    if (!node)
+    {
+      return ERROR;
+    }
+    node->info = (void *)elem;
+    return node;
+  }
+  comp = cmp(elem, node->info);
+  if (comp > 0)
+  {
+    return _bst_insert_rec(node->left, elem, cmp);
+  }
+  else if (comp < 0)
+  {
+    return _bst_insert_rec(node->right, elem, cmp);
+  }
+
+  return node;
 }
 
 Status tree_insert(BSTree *tree, const void *elem)
 {
-  BSTNode *w = NULL, *v = NULL, *u = NULL;
-  int cmp;
   if (!tree || !elem)
   {
     return ERROR;
   }
 
-  /*Pongo la explicación de la función para no olvidarnos Botvan
-  Primero compara los nodos hasta encontrar el sitio, guardando siempre el nodo anterior*/
-  w = tree->root;
-  while (w != NULL)
-  {
-    v = w;
-    cmp = tree->cmp_ele(elem, w->info);
-    if (cmp == 0)
-    {
-      return OK;
-    }
-    else if (cmp > 0)
-    {
-      w = w->right;
-    }
-    else if (cmp < 0)
-    {
-      w = w->left;
-    }
-  }
-
-  /*Segundo crea el nuevo nodo y lo apunta a la información en el argumento*/
-  u = _bst_node_new();
-  if (!u)
-  {
-    return ERROR;
-  }
-  u->info = (void *)elem;
-
-  /* Tercero chequea que  el nodo root existe y si existe conecta con el anterior usando la comparación anterior*/
-  if (!v)
-  {
-    tree->root = u;
-  }
-  else
-  {
-    if (cmp < 0)
-    {
-      v->left = u;
-    }
-    if (cmp > 0)
-    {
-      v->right = u;
-    }
-  }
+  tree->root = _bst_insert_rec(tree->root, elem, tree->cmp_ele);
 
   return OK;
+}
+
+BSTNode *_bst_remove_rec(BSTNode *pn, const void *elem, P_ele_cmp cmp_elem)
+{
+  int comp;
+  BSTNode *ret_node = NULL, *aux_node = NULL;
+
+  if (!pn || !elem || !cmp_elem)
+  {
+    return NULL;
+  }
+
+  comp = cmp_elem(elem, pn->info);
+
+  if (comp < 0)
+  {
+    pn->left = _bst_remove_rec(pn->left, elem, cmp_elem);
+  }
+  else if (comp > 0)
+  {
+    pn->right = _bst_remove_rec(pn->right, elem, cmp_elem);
+  }
+  else if (comp == 0)
+  {
+    if (!pn->left && !pn->right) /*Ningun hijo*/
+    {
+      _bst_node_free(pn);
+      return NULL;
+    }
+    else if (pn->left && !pn->right) /*Tiene hijo izquierdo, pero no derecho*/
+    {
+      ret_node = pn->left;
+      _bst_node_free(pn);
+      return ret_node;
+    }
+    else if (!pn->left && pn->right) /*Tiene hijo derecho, pero no izquierdo*/
+    {
+      ret_node = pn->right;
+      _bst_node_free(pn);
+      return ret_node;
+    }
+    else if (pn->left && pn->right) /*Tiene dos hijos*/
+    {
+      aux_node = _bst_find_min_rec(pn->right);
+      pn->info = aux_node->info;
+      pn->right = _bst_remove_rec(pn->right, aux_node->info, cmp_elem);
+      return pn;
+    }
+  }
+
+  return pn;
+}
+
+Status tree_remove(BSTree *tree, const void *elem)
+{
+  BSTNode *w = NULL;
+  if (!tree || !elem)
+  {
+    return FALSE;
+  }
+
+  w = _bst_remove_rec(tree->root, elem, tree->cmp_ele);
+  if (!w)
+  {
+    return FALSE;
+  }
+
+  return TRUE;
 }

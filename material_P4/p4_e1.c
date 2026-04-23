@@ -195,13 +195,12 @@ int main(int argc, char const *argv[])
     fprintf(f_out, " - %ld ticks (%f seconds)\n", (long)time, ((float)time) / CLOCKS_PER_SEC);
 
     /*EXERCISE 2 - TREE_REMOVE
-        fprintf(f_out, "Removing element in tree: ");
-        time = clock();
-        fprintf(f_out, "%s", tree_remove(t, m) == OK ? "OK" : "ERR");
-        time = clock() - time;
-        fprintf(f_out, " - %ld ticks (%f seconds)\n", (long)time, ((float) time) / CLOCKS_PER_SEC);
-        fprintf(f_out, "Tree size: %ld\nTree depth: %d\n", tree_size(t), tree_depth(t));
-    */
+    fprintf(f_out, "Removing element in tree: ");
+    time = clock();
+    fprintf(f_out, "%s", tree_remove(t, m) == OK ? "OK" : "ERR");
+    time = clock() - time;
+    fprintf(f_out, " - %ld ticks (%f seconds)\n", (long)time, ((float)time) / CLOCKS_PER_SEC);
+    fprintf(f_out, "Tree size: %ld\nTree depth: %d\n", tree_size(t), tree_depth(t));*/
   }
   else
   {
