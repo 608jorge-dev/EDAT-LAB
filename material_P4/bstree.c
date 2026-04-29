@@ -29,7 +29,7 @@ BSTNode *_bst_node_new()
 {
   BSTNode *pn = NULL;
 
-  pn = malloc(sizeof(BSTNode));
+  pn = (BSTNode*) malloc(sizeof(BSTNode));
   if (!pn)
   {
     return NULL;
@@ -249,11 +249,12 @@ int tree_postOrder(FILE *f, const BSTree *tree)
 BSTNode *_bst_find_min_rec(BSTNode *node)
 {
   if (!node)
+  {
     return NULL;
-
+  }
   if (!node->left)
   {
-    return node->info;
+    return node;
   }
 
   return _bst_find_min_rec(node->left);
@@ -261,21 +262,28 @@ BSTNode *_bst_find_min_rec(BSTNode *node)
 
 void *tree_find_min(BSTree *tree)
 {
+  BSTNode *min;
   if (!tree || !tree->root)
   {
     return NULL;
   }
-  return _bst_find_min_rec(tree->root);
+  min = _bst_find_min_rec(tree->root);
+  if (min)
+  {
+    return min->info;
+  }
+  return NULL;
 }
 
 BSTNode *_bst_find_max_rec(BSTNode *node)
 {
   if (!node)
+  {
     return NULL;
-
+  }
   if (!node->right)
   {
-    return node->info;
+    return node;
   }
 
   return _bst_find_max_rec(node->right);
@@ -283,11 +291,17 @@ BSTNode *_bst_find_max_rec(BSTNode *node)
 
 void *tree_find_max(BSTree *tree)
 {
+  BSTNode *max = NULL;
   if (!tree || !tree->root)
   {
     return NULL;
   }
-  return _bst_find_max_rec(tree->root);
+  max = _bst_find_max_rec(tree->root);
+  if (max)
+  {
+    return max->info;
+  }
+  return NULL;
 }
 
 Bool _bst_contains_rec(BSTNode *node, const void *elem, P_ele_cmp cmp)
@@ -336,19 +350,19 @@ BSTNode *_bst_insert_rec(BSTNode *node, const void *elem, P_ele_cmp cmp)
     node = _bst_node_new();
     if (!node)
     {
-      return ERROR;
+      return NULL;
     }
     node->info = (void *)elem;
     return node;
   }
   comp = cmp(elem, node->info);
-  if (comp > 0)
+  if (comp < 0)
   {
-    return _bst_insert_rec(node->left, elem, cmp);
+    node->left = _bst_insert_rec(node->left, elem, cmp);
   }
-  else if (comp < 0)
+  else if (comp > 0)
   {
-    return _bst_insert_rec(node->right, elem, cmp);
+    node->right = _bst_insert_rec(node->right, elem, cmp);
   }
 
   return node;
