@@ -29,7 +29,7 @@ BSTNode *_bst_node_new()
 {
   BSTNode *pn = NULL;
 
-  pn = (BSTNode*) malloc(sizeof(BSTNode));
+  pn = (BSTNode *)malloc(sizeof(BSTNode));
   if (!pn)
   {
     return NULL;
@@ -375,6 +375,11 @@ Status tree_insert(BSTree *tree, const void *elem)
     return ERROR;
   }
 
+  if (tree_contains(tree, elem) == TRUE)
+  {
+    return OK;
+  }
+
   tree->root = _bst_insert_rec(tree->root, elem, tree->cmp_ele);
 
   return OK;
@@ -441,4 +446,41 @@ Status tree_remove(BSTree *tree, const void *elem)
   tree->root = _bst_remove_rec(tree->root, elem, tree->cmp_ele);
 
   return OK;
+}
+
+void _bst_rangeSearch_rec(BSTNode *node, void *min, void *max, List *l)
+{
+  if (!min || !max || !l || !node)
+  {
+    return;
+  }
+
+  /*if (node->info >)*/
+
+
+  return;
+}
+
+List *tree_rangeSearch(const BSTree *tree, void *min, void *max)
+{
+  List *l = NULL;
+  if (!tree || !min || !max)
+  {
+    return NULL;
+  }
+
+  l = list_new();
+  if (!l)
+  {
+    return NULL;
+  }
+
+  _bst_rangeSearch_rec(tree->root, min, max, l);
+
+  return l;
+}
+
+int tree_countLongSongs(const BSTree *tree, int min_duration)
+{
+  return 0;
 }

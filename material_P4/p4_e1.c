@@ -194,13 +194,13 @@ int main(int argc, char const *argv[])
     time = clock() - time;
     fprintf(f_out, " - %ld ticks (%f seconds)\n", (long)time, ((float)time) / CLOCKS_PER_SEC);
 
-    /*EXERCISE 2 - TREE_REMOVE
+    /*EXERCISE 2 - TREE_REMOVE*/
     fprintf(f_out, "Removing element in tree: ");
     time = clock();
     fprintf(f_out, "%s", tree_remove(t, m) == OK ? "OK" : "ERR");
     time = clock() - time;
     fprintf(f_out, " - %ld ticks (%f seconds)\n", (long)time, ((float)time) / CLOCKS_PER_SEC);
-    fprintf(f_out, "Tree size: %ld\nTree depth: %d\n", tree_size(t), tree_depth(t));*/
+    fprintf(f_out, "Tree size: %ld\nTree depth: %d\n", tree_size(t), tree_depth(t));
   }
   else
   {
@@ -217,8 +217,10 @@ int main(int argc, char const *argv[])
 
 /* P1 ¿Por qué es así?, ¿hay alguna propiedad del árbol que permita explicar este comportamiento?*/
 /* 
-Al insertar los nodos con un orden el árbol se convierte más en una lista (ya que se produce que los nodos se enlazan todos a la izquierda o a la derecha, debido al comportamiento 
-de la insercion que inserta a la izquierda si son menores o a la derecha si son mayores) y por lo tanto tiene hay mayor recorrido en el árbol, al contrario que si se insertan de manera aleatoria, 
-en la cual puede ocurrir todos los casos, que se inserten consecutivamente en el mismo lado o no. Es decir, dado que la función de insert realiza un filtrado según la comparación de los elementos, si los elementos están
-ordenados significa que va a haber mayor profundidad en el árbol.
+Al insertar los nodos con un orden el árbol se convierte más en una lista (ya que se produce que los nodos se enlazan todos
+a la izquierda o a la derecha, debido al comportamiento de la insercion que inserta a la izquierda si son menores o a la 
+derecha si son mayores) y por lo tanto tiene hay mayor recorrido en el árbol, al contrario que si se insertan de manera aleatoria, 
+en la cual puede ocurrir todos los casos, que se inserten consecutivamente en el mismo lado o no. Es decir, dado que la función 
+de insert realiza un filtrado según la comparación de los elementos, si los elementos están ordenados significa que va a haber 
+mayor profundidad en el árbol.
 */

@@ -2,10 +2,11 @@
 CC=gcc
 CFLAGS= -g -Wall -pedantic -std=c90
 LIBS = -lstack -L.
-EJS = p4_e1 
+EJS = p4_e1 p4_e2 p4_e3
 ########################################################
 OBJECTSP4E1 = p4_e1.o radio.o music.o bstree.o list.o
-
+OBJECTSP4E2 = p4_e2.o radio.o music.o bstree.o list.o
+OBJECTSP4E3 = p4_e3.o radio.o music.o bstree.o list.o
 ########################################################
 
 all: $(EJS)
@@ -15,12 +16,22 @@ all: $(EJS)
 p4_e1: $(OBJECTSP4E1)
 	$(CC) $(CFLAGS) -o p4_e1 $(OBJECTSP4E1)
 
+p4_e2: $(OBJECTSP4E2)
+	$(CC) $(CFLAGS) -o p4_e2 $(OBJECTSP4E2)
 
+p4_e3: $(OBJECTSP4E3)
+	$(CC) $(CFLAGS) -o p4_e3 $(OBJECTSP4E3)
 
 ########################################################
 
 p4_e1.o: p4_e1.c music.h radio.h bstree.h
 	$(CC) $(CFLAGS) -c p4_e1.c
+
+p4_e2.o: p4_e2.c music.h radio.h bstree.h
+	$(CC) $(CFLAGS) -c p4_e2.c
+
+p4_e3.o: p4_e3.c music.h radio.h bstree.h
+	$(CC) $(CFLAGS) -c p4_e3.c
 
 music.o: music.c music.h 
 	$(CC) $(CFLAGS) -c music.c
@@ -39,15 +50,22 @@ bstree.o: bstree.c bstree.h
 
 clear:
 	rm -rf *.o $(EJS) 
+	clear
 
 run:
 	@echo ">>>>>>Running p4_e1"
 	./p4_e1 data_music_10.txt 8 normal
 	./p4_e1 data_music_10.txt 8 sorted
+	./p4_e2 data_music_10.txt 3 7
+	./p4_e3 data_music_10.txt 300
 
 	
 runv:
 	
 	@echo ">>>>>>Running p4_e1 with valgrind"
-	valgrind --leak-check=full ./p4_e1 data_music_10 8 normal
-	valgrind --leak-check=full ./p4_e1 data_music_10 8 sorted
+	valgrind --leak-check=full ./p4_e1 data_music_10.txt 8 normal
+	valgrind --leak-check=full ./p4_e1 data_music_10.txt 8 sorted
+	@echo ">>>>>>Running p4_e2 with valgrind"
+	valgrind --leak-check=full ./p4_e2 data_music_10.txt 3 7
+	@echo ">>>>>>Running p4_e3 with valgrind"
+	valgrind --leak-check=full ./p4_e3 data_music_10.txt 300

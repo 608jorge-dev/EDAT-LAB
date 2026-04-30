@@ -29,7 +29,14 @@ struct _List
   int size;
 };
 
-/*****************************************/
+/**************** PRIVADAS *************************/
+/**
+ * @brief It creates a new node
+ *
+ * Allocates memory for the new node.
+ *
+ * @return Returns the address of the new node, or NULL in case of error.
+ */
 Node *node_new()
 {
   Node *new_node = NULL;
@@ -46,6 +53,14 @@ Node *node_new()
   return new_node;
 }
 
+/**
+ * @brief It sets the size of the list
+ *
+ * @param pl Pointer to the List.
+ * @param amount Integer to the size
+ *
+ * @return Status value OK if the insertion could be done, Status value ERROR otherwise.
+ */
 Status list_set_size(List *pl, int amount)
 {
   if (!pl || amount < 0)
@@ -58,7 +73,7 @@ Status list_set_size(List *pl, int amount)
   return OK;
 }
 
-/**************************************/
+/*************************************************/
 List *list_new()
 {
   List *new_list = NULL;
@@ -102,7 +117,7 @@ Bool list_isEmpty(const List *pl)
   {
     return TRUE;
   }
-  
+
   return FALSE;
 }
 
@@ -172,6 +187,11 @@ void *list_popFront(List *pl)
   e = n->info;
   pl->first = n->next;
 
+  if (list_size(pl) == 1)
+  {
+    pl->last = NULL;
+  }
+
   list_set_size(pl, list_size(pl) - 1);
   free((void *)n);
 
@@ -186,6 +206,13 @@ void *list_popBack(List *pl)
   {
     return NULL;
   }
+
+
+  if (list_size(pl) == 1)
+  {
+    pl->last = NULL;
+  }
+
   if (pl->first->next == NULL)
   {
     e = pl->first->info;

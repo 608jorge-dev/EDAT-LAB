@@ -242,7 +242,7 @@ int radio_musicPosition(const Radio *r, long id)
 
 int radio_print(FILE *pf, const Radio *r)
 {
-  int i, j, pos, counter=0;
+  int i, j, pos, counter = 0;
   long *ar = NULL;
   if (!pf || !r)
   {
@@ -349,4 +349,3 @@ Music **radio_getSongs(Radio *r)
 
   return r->songs;
 }
-
