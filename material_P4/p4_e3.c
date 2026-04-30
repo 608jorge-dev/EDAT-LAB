@@ -51,9 +51,9 @@ int main(int argc, char const *argv[])
     int n, more_duration, min_duration;
     Radio *r = NULL;
 
-    if (argc != 4)
+    if (argc != 3)
     {
-        printf("Usage: %s music_file first_id second_id\n", argv[0]);
+        printf("Usage: %s music_file min_duration\n", argv[0]);
         exit(EXIT_FAILURE);
     }
 
@@ -76,7 +76,7 @@ int main(int argc, char const *argv[])
     }
 
     songs = radio_getSongs(r);
-    if (songs)
+    if (!songs)
     {
         mainCleanUp(EXIT_FAILURE, r, fIn);
     }
@@ -99,7 +99,10 @@ int main(int argc, char const *argv[])
         mainCleanUp(EXIT_FAILURE, r, fIn);
     }
 
-    fprintf(stdout, "Numero de canciones con duracion mayor a %d segundos: %d", min_duration, more_duration);
+    fprintf(stdout, "Numero de canciones con duracion mayor a %d segundos: %d\n", min_duration, more_duration);
+
+    tree_destroy(t);
+    mainCleanUp(EXIT_SUCCESS, r, fIn);
 
     return 1;
 }

@@ -1,7 +1,6 @@
 ########################################################
 CC=gcc
 CFLAGS= -g -Wall -pedantic -std=c90
-LIBS = -lstack -L.
 EJS = p4_e1 p4_e2 p4_e3
 ########################################################
 OBJECTSP4E1 = p4_e1.o radio.o music.o bstree.o list.o

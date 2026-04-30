@@ -480,7 +480,30 @@ List *tree_rangeSearch(const BSTree *tree, void *min, void *max)
   return l;
 }
 
+int _tree_countLongSongs_rec(BSTNode *node, int min_duration) {
+  int count = 0;
+  Music *m = NULL;
+
+  if (!node) 
+  {
+    return 0;
+  }
+  
+  m = (Music *)node->info;
+
+  if (music_getDuration(m) > min_duration) 
+  {
+    count = 1;
+  }
+
+  return count + _tree_countLongSongs_rec(node->left, min_duration) + _tree_countLongSongs_rec(node->right, min_duration);
+}
+
 int tree_countLongSongs(const BSTree *tree, int min_duration)
 {
-  return 0;
+  if (!tree || !tree->root) 
+  {
+    return -1;
+  }
+  return _tree_countLongSongs_rec(tree->root, min_duration);
 }
