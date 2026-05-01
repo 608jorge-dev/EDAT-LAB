@@ -298,6 +298,11 @@ int music_cmp(const void *m1, const void *m2)
   one = (Music *)m1;
   two = (Music *)m2;
 
+  if (!one || !two)
+  {
+    return ERROR_CMP;
+  }
+
   id1 = music_getId(one);
   id2 = music_getId(two);
 
@@ -308,11 +313,6 @@ int music_cmp(const void *m1, const void *m2)
   if (id1 < id2)
   {
     return -1;
-  }
-
-  if (!one || !two)
-  {
-    return ERROR_CMP;
   }
 
   if (strcmp(music_getTitle(one), music_getTitle(two)) == 0)

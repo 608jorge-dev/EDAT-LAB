@@ -47,7 +47,7 @@ int main(int argc, char const *argv[])
 {
     FILE *fIn = NULL;
     BSTree *t = NULL;
-    Music **songs = NULL;
+    Music **songs = NULL, *m1 = NULL, *m2 = NULL;
     long min, max;
     int n;
     Radio *r = NULL;
@@ -78,7 +78,7 @@ int main(int argc, char const *argv[])
     }
 
     songs = radio_getSongs(r);
-    if (songs)
+    if (!songs)
     {
         mainCleanUp(EXIT_FAILURE, r, fIn);
     }
@@ -97,7 +97,27 @@ int main(int argc, char const *argv[])
         mainCleanUp(EXIT_FAILURE, r, fIn);
     }
 
-    l = tree_rangeSearch(t, (void *)min, (void *)max);
+    m1 = music_init();
+    if (!m1)
+    {
+        mainCleanUp(EXIT_FAILURE, r, fIn);
+    }
+    if (music_setId(m1, min) == ERROR)
+    {
+        mainCleanUp(EXIT_FAILURE, r, fIn);
+    }
+
+    m2 = music_init();
+    if (!m2)
+    {
+        mainCleanUp(EXIT_FAILURE, r, fIn);
+    }
+    if (music_setId(m2, max) == ERROR)
+    {
+        mainCleanUp(EXIT_FAILURE, r, fIn);
+    }
+
+    l = tree_rangeSearch(t, m1, m2);
     if (!l)
     {
         mainCleanUp(EXIT_FAILURE, r, fIn);
@@ -107,7 +127,10 @@ int main(int argc, char const *argv[])
         mainCleanUp(EXIT_FAILURE, r, fIn);
     }
 
-    return 1;
+    return 0;
 }
 
 /* P2 ¿qué características observas en la lista resultante?, ¿a qué se debe?*/
+/* La característica más notoria de la lista es que se encuentra ordenada en orden ascendente debido a que la función de búsqueda del árbol recorre el árbol en inorden
+y la función recursiva de búsqueda usa la funcion list_pushback para insertar los nodos que va encontrando, lo que produce una lista organizada en orden (debido a la función de búsqueda)
+y en orden ascendente (debido a la función recursiva de búsqueda)*/

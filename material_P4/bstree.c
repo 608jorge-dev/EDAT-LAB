@@ -448,15 +448,32 @@ Status tree_remove(BSTree *tree, const void *elem)
   return OK;
 }
 
-void _bst_rangeSearch_rec(BSTNode *node, void *min, void *max, List *l)
+void _bst_rangeSearch_rec(BSTNode *node, void *min, void *max, List *l, P_ele_cmp cmp)
 {
+  int cmin, cmax;
   if (!min || !max || !l || !node)
   {
     return;
   }
 
-  /*if (node->info >)*/
+  cmin = cmp(node->info, min);
+  cmax = cmp(node->info, max);
 
+  if (cmin > 0)
+  {
+    _bst_rangeSearch_rec(node->left, min, max, l, cmp);
+  }
+
+  if (cmin >= 0 && cmax <= 0)
+  {
+
+    list_pushBack(l, node->info);
+  }
+
+  if (cmax < 0)
+  {
+    _bst_rangeSearch_rec(node->right, min, max, l, cmp);
+  }
 
   return;
 }
@@ -475,23 +492,24 @@ List *tree_rangeSearch(const BSTree *tree, void *min, void *max)
     return NULL;
   }
 
-  _bst_rangeSearch_rec(tree->root, min, max, l);
+  _bst_rangeSearch_rec(tree->root, min, max, l, tree->cmp_ele);
 
   return l;
 }
 
-int _tree_countLongSongs_rec(BSTNode *node, int min_duration) {
+int _tree_countLongSongs_rec(BSTNode *node, int min_duration)
+{
   int count = 0;
   Music *m = NULL;
 
-  if (!node) 
+  if (!node)
   {
     return 0;
   }
-  
+
   m = (Music *)node->info;
 
-  if (music_getDuration(m) > min_duration) 
+  if (music_getDuration(m) > min_duration)
   {
     count = 1;
   }
@@ -501,7 +519,7 @@ int _tree_countLongSongs_rec(BSTNode *node, int min_duration) {
 
 int tree_countLongSongs(const BSTree *tree, int min_duration)
 {
-  if (!tree || !tree->root) 
+  if (!tree || !tree->root)
   {
     return -1;
   }
