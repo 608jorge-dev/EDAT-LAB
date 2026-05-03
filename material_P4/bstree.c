@@ -451,7 +451,7 @@ Status tree_remove(BSTree *tree, const void *elem)
 void _bst_rangeSearch_rec(BSTNode *node, void *min, void *max, List *l, P_ele_cmp cmp)
 {
   int cmin, cmax;
-  if (!min || !max || !l || !node)
+  if (!min || !max || !l || !node || !cmp)
   {
     return;
   }

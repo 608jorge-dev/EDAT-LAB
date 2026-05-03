@@ -6,10 +6,14 @@
 #include "radio.h"
 #include "types.h"
 
-int mainCleanUp(int ret_value, Radio *r, FILE *pf)
+int mainCleanUp(int ret_value, Radio *r, FILE *pf, BSTree *t, Music *m1, Music *m2, List *l)
 {
     radio_free(r);
     fclose(pf);
+    tree_destroy(t);
+    music_free(m1);
+    music_free(m2);
+    list_free(l);
     exit(ret_value);
 }
 
@@ -68,24 +72,24 @@ int main(int argc, char const *argv[])
     r = radio_init();
     if (!r)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
 
     if (radio_readFromFile(fIn, r) == ERROR)
     {
         fprintf(stdout, "Not file or File format incorrect\n");
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);;
     }
 
     songs = radio_getSongs(r);
     if (!songs)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
     n = radio_getNumberOfMusic(r);
     if (n <= 0)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
 
     min = atoi(argv[2]);
@@ -94,39 +98,41 @@ int main(int argc, char const *argv[])
     t = loadUnbalancedTree(songs, n);
     if (!t)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
 
     m1 = music_init();
     if (!m1)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
     if (music_setId(m1, min) == ERROR)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
 
     m2 = music_init();
     if (!m2)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
     if (music_setId(m2, max) == ERROR)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
 
     l = tree_rangeSearch(t, m1, m2);
     if (!l)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
     if (list_print(stdout, l, music_plain_print) == 0)
     {
-        mainCleanUp(EXIT_FAILURE, r, fIn);
+        mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     }
 
+    mainCleanUp(EXIT_SUCCESS, r, fIn, t, m1, m2, l);
     return 0;
 }
 
