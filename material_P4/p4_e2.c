@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
     FILE *fIn = NULL;
     BSTree *t = NULL;
     Music **songs = NULL, *m1 = NULL, *m2 = NULL;
-    long min, max;
+    long min = atoi(argv[2]), max = atoi(argv[3]);
     int n;
     Radio *r = NULL;
     List *l = NULL;
@@ -66,11 +66,6 @@ int main(int argc, char const *argv[])
     {
         return (EXIT_FAILURE);
     }
-
-    min = atoi(argv[2]);
-    min = atoi(argv[2]);
-    max = atoi(argv[3]);
-    max = atoi(argv[3]);
 
     r = radio_init();
     if (!r)

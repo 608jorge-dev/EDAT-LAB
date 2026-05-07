@@ -270,7 +270,7 @@ int list_size(const List *pl)
 
 int list_print(FILE *fp, const List *pl, p_list_ele_print f)
 {
-  int sz, counter;
+  int sz = 0, counter = 0;
   Node *e = NULL;
 
   if (!fp || !pl || !f)
