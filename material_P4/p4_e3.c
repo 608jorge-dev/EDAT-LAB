@@ -93,9 +93,10 @@ int main(int argc, char const *argv[])
     }
 
     min_duration = atoi(argv[2]);
-    more_duration = tree_countLongSongs (t, min_duration);
+    more_duration = tree_countLongSongs(t, min_duration);
 
-    if (more_duration == -1) {
+    if (more_duration == -1)
+    {
         mainCleanUp(EXIT_FAILURE, r, fIn);
     }
 
@@ -108,7 +109,7 @@ int main(int argc, char const *argv[])
 }
 
 /* P3. Tal y como está construido el árbol ¿es posible realizar una poda inteligente para optimizar el recorrido al filtrar por duración?
-No, ya que el árbol se ordena según los ids, por lo que vas a tener que revisar todas y cada una de las canciones para comprobar su duración, 
-y que se comparen. En el caso en que se ordenaran por duración, se podría, aunque no tendría sentido ordenarlo así, ya que las duraciones 
-pueden coincidir, y no habría manera de decidir si el nodo va hacia la izquierda o derecha. 
+No, ya que el árbol se ordena según los ids, por lo que vas a tener que revisar todas y cada una de las canciones para comprobar su duración,
+y que se comparen. En el caso en que se ordenaran por duración, se podría, aunque no tendría sentido ordenarlo así, ya que las duraciones
+pueden coincidir, y no habría manera de decidir si el nodo va hacia la izquierda o derecha.
 */

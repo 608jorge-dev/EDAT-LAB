@@ -21,7 +21,14 @@ struct _BSTree
 };
 /* END [_BSTree] */
 
-/*** BSTNode TAD private functions ***/
+/**************** PRIVADAS *************************/
+/**
+ * @brief It searches a new node
+ *
+ * Allocates memory for the new node.
+ *
+ * @return Returns the address of the new node, or NULL in case of error.
+ */
 void _tree_rangeSearch_rec(BSTNode *node, void *min, void *max, List *list, P_ele_cmp cmp);
 int _tree_countLongSongs_rec(BSTNode *node, int min_duration);
 
@@ -519,9 +526,9 @@ int _tree_countLongSongs_rec(BSTNode *node, int min_duration)
 
 int tree_countLongSongs(const BSTree *tree, int min_duration)
 {
-  if (!tree || !tree->root)
+  if (!tree || !tree->root || tree_isEmpty(tree) == TRUE)
   {
-    return -1;
+    return 0;
   }
   return _tree_countLongSongs_rec(tree->root, min_duration);
 }
