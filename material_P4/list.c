@@ -138,6 +138,11 @@ Status list_pushFront(List *pl, const void *e)
   n->info = (void *)e;
   n->next = pl->first;
   pl->first = n;
+
+  if (pl->size == 0)
+  {
+    pl->last = n;
+  }
   list_set_size(pl, list_size(pl) + 1);
 
   return OK;
@@ -207,7 +212,6 @@ void *list_popBack(List *pl)
     return NULL;
   }
 
-
   if (list_size(pl) == 1)
   {
     pl->last = NULL;
@@ -266,7 +270,7 @@ int list_size(const List *pl)
 
 int list_print(FILE *fp, const List *pl, p_list_ele_print f)
 {
-  int sz, c = 0, counter;
+  int sz, counter;
   Node *e = NULL;
 
   if (!fp || !pl || !f)
@@ -284,15 +288,14 @@ int list_print(FILE *fp, const List *pl, p_list_ele_print f)
 
   while (e != NULL)
   {
-    counter = f(fp, e->info);
+    counter += f(fp, e->info);
     if (counter == 0)
     {
       return ERROR_PRINT;
     }
     fprintf(fp, "\n");
-    c += counter;
     e = e->next;
   }
 
-  return c;
+  return counter;
 }
